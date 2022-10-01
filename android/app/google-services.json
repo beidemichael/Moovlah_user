@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "601369316959",
+    "project_id": "moovlah-66c45",
+    "storage_bucket": "moovlah-66c45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601369316959:android:0b1eef4c2583a1b89355ea",
+        "android_client_info": {
+          "package_name": "com.example.moovlah_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601369316959-28r13h7eba9iejsjfe0nra3c9ombdkh2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.moovlah_user",
+            "certificate_hash": "2db82823f7cf93240b2b85f8517474a8194d9010"
+          }
+        },
+        {
+          "client_id": "601369316959-qgk2o97ant8qf0h5lj1b909e6bmfgb1t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC8eK2_tywqgCtS8kLaOdrjs61aMVP1hI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601369316959-qgk2o97ant8qf0h5lj1b909e6bmfgb1t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
