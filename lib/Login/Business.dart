@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moovlah_user/Shared/YellowButton.dart';
+import 'package:provider/provider.dart';
 
+import '../Models/models.dart';
 import '../Screens/BaseScreen.dart';
+import '../Service/Database.dart';
 
 class Business extends StatefulWidget {
   const Business({super.key});
@@ -223,7 +226,12 @@ class _BusinessState extends State<Business> {
                   GestureDetector(
                       onTap: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => BaseScreen()));
+                            MaterialPageRoute(builder: (_) => 
+                            StreamProvider<List<Vehicles>>.value(
+                          value: DatabaseService().vehicles,
+                          initialData: [],
+                          child: BaseScreen())
+                            ));
                       },
                       child: YellowButton(text: 'Next'))
                 ],
