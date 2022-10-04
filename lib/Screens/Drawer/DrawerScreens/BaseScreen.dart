@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
-import 'package:moovlah_user/Screens/BaseScreenWidgets/AddLocation.dart';
-import 'package:moovlah_user/Screens/BaseScreenWidgets/VehiclesList.dart';
 import 'package:provider/provider.dart';
 
-import 'Drawer/DrawerContent.dart';
+import '../../BaseScreenWidgets/AddLocation.dart';
+import '../../BaseScreenWidgets/VehiclesList.dart';
+import '../DrawerContent.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});

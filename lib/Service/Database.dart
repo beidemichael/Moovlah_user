@@ -23,6 +23,7 @@ class DatabaseService {
         capacity: (doc.data() as dynamic)['Capacity'] ?? '',
         dimension: (doc.data() as dynamic)['Dimension'] ?? '',
         image: (doc.data() as dynamic)['Image'] ?? '',
+        extraService: (doc.data() as dynamic)['ExtraService'] ?? [],
         documentId: doc.reference.id,
       );
     }).toList();
