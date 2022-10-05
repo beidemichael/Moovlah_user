@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
-import 'package:moovlah_user/Screens/BaseScreenWidgets/AddLocation.dart';
-import 'package:moovlah_user/Screens/BaseScreenWidgets/VehiclesList.dart';
+import 'package:moovlah_user/Screens/1.2,BaseScreenWidgets/1,AddLocationCard.dart';
+import 'package:moovlah_user/Screens/1.2,BaseScreenWidgets/2,VehiclesListCard.dart';
 import 'package:provider/provider.dart';
 
-import 'Drawer/DrawerContent.dart';
+import '1.3,Drawer/DrawerContent.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -18,8 +19,8 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   ScrollController? scrollController;
   List<LocationList> locationList = [
-    LocationList(name: 'Pick-up location', location: ''),
-    LocationList(name: 'Drop-off location', location: '')
+    LocationList(name: 'Pick-up location', location: LatLng(0.0, 0.0),description: '' ),
+    LocationList(name: 'Drop-off location', location: LatLng(0.0, 0.0), description: '')
   ];
   int checkedindex = 10000;
    @override

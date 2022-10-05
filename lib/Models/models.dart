@@ -20,9 +20,8 @@ class Vehicles {
 
 class LocationList {
   String name;
-  String location;
-  LocationList({
-    required this.name,
-    required this.location,
-  });
+  var location;
+  String description;
+  LocationList(
+      {required this.name, required this.location, required this.description});
 }
