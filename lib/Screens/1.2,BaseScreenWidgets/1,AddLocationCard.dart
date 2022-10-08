@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
+import '../../Models/OrderModel.dart';
 import '../../Models/models.dart';
 import '1.1,LocationSearchScreen.dart';
 
 class AddLocation extends StatefulWidget {
-  final List<LocationList> locationList;
-  const AddLocation({super.key, required this.locationList});
+  const AddLocation({super.key});
 
   @override
   State<AddLocation> createState() => _AddLocationState();
@@ -16,6 +16,7 @@ class AddLocation extends StatefulWidget {
 class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
+    final locationList = Provider.of<Order>(context).locationListDisplay;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Container(
@@ -42,38 +43,42 @@ class _AddLocationState extends State<AddLocation> {
           children: [
             Container(
               // color: Colors.green,
-              height: 60 * widget.locationList.length.toDouble(),
+              height: 60 * locationList.length.toDouble(),
               child: ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.locationList.length,
+                itemCount: locationList.length,
                 itemBuilder: (context, index) {
                   return Stack(
                     children: [
-                     index == 0 ?const Positioned(
-                        top: 24,
-                        left: 18,
-                        child: Icon(
-                          FontAwesomeIcons.circleDot,
-                          size: 15.0,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ):index == widget.locationList.length-1 ?const Positioned(
-                        top: 24,
-                        left: 18,
-                        child: Icon(
-                          FontAwesomeIcons.locationDot,
-                          size: 18.0,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ):const Positioned(
-                        top: 24,
-                        left: 21,
-                        child: Icon(
-                          FontAwesomeIcons.circle,
-                          size: 11.0,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                      ),
+                      index == 0
+                          ? const Positioned(
+                              top: 24,
+                              left: 18,
+                              child: Icon(
+                                FontAwesomeIcons.circleDot,
+                                size: 15.0,
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            )
+                          : index == locationList.length - 1
+                              ? const Positioned(
+                                  top: 24,
+                                  left: 18,
+                                  child: Icon(
+                                    FontAwesomeIcons.locationDot,
+                                    size: 18.0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                )
+                              : const Positioned(
+                                  top: 24,
+                                  left: 21,
+                                  child: Icon(
+                                    FontAwesomeIcons.circle,
+                                    size: 11.0,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -83,11 +88,12 @@ class _AddLocationState extends State<AddLocation> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => LocationSearchScreen(
-                                            location: widget.locationList[index],
+                                            location: locationList[index],
                                           )));
                             },
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 50.0, right: 25),
+                              padding:
+                                  const EdgeInsets.only(left: 50.0, right: 25),
                               child: Container(
                                 height: 60,
                                 // color: Colors.red[200],
@@ -100,11 +106,10 @@ class _AddLocationState extends State<AddLocation> {
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            widget.locationList[index]
-                                                        .description ==
+                                            locationList[index].description ==
                                                     ''
-                                                ? widget.locationList[index].name
-                                                : widget.locationList[index]
+                                                ? locationList[index].name
+                                                : locationList[index]
                                                     .description,
                                             softWrap: false,
                                             maxLines: 2,
@@ -112,7 +117,7 @@ class _AddLocationState extends State<AddLocation> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 18.0,
-                                                color: widget.locationList[index]
+                                                color: locationList[index]
                                                             .description ==
                                                         ''
                                                     ? const Color.fromARGB(
@@ -122,14 +127,12 @@ class _AddLocationState extends State<AddLocation> {
                                           ),
                                         ),
                                         index != 0 &&
-                                                index !=
-                                                    widget.locationList.length - 1
+                                                index != locationList.length - 1
                                             ? GestureDetector(
                                                 onTap: () {
-                                                  setState(() {
-                                                    widget.locationList.remove(
-                                                        widget.locationList[index]);
-                                                  });
+                                                  Provider.of<Order>(context,
+                                                          listen: false)
+                                                      .removeLocation(index);
                                                 },
                                                 child: Container(
                                                   height: 50,
@@ -173,15 +176,7 @@ class _AddLocationState extends State<AddLocation> {
             ),
             GestureDetector(
               onTap: () {
-                setState(() {
-                  LocationList lastLocation = widget.locationList.last;
-                  widget.locationList.remove(widget.locationList.last);
-                  widget.locationList.add(LocationList(
-                      name: 'Mid-stop location',
-                      location: const LatLng(0.0, 0.0),
-                      description: ''));
-                  widget.locationList.add(lastLocation);
-                });
+                Provider.of<Order>(context, listen: false).addMidLocation();
               },
               child: Container(
                 height: 60,

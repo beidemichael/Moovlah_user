@@ -32,6 +32,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
             child: MapForLocation(
               mapController: mapController,
               cameraPosition: cameraPosition,
+              location: widget.location,
             ),
           ),
 

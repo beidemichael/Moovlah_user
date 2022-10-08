@@ -225,13 +225,15 @@ class _BusinessState extends State<Business> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (_) => 
-                            StreamProvider<List<Vehicles>>.value(
-                          value: DatabaseService().vehicles,
-                          initialData: [],
-                          child: BaseScreen())
-                            ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    StreamProvider<List<Vehicles>>.value(
+                                        value: DatabaseService().vehicles,
+                                        initialData: [],
+                                        catchError: (_, __) => [],
+                                        child: BaseScreen())));
                       },
                       child: YellowButton(text: 'Next'))
                 ],

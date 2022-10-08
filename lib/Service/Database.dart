@@ -24,6 +24,10 @@ class DatabaseService {
         dimension: (doc.data() as dynamic)['Dimension'] ?? '',
         image: (doc.data() as dynamic)['Image'] ?? '',
         extraService: (doc.data() as dynamic)['ExtraService'] ?? [],
+        extraServicePrice: (doc.data() as dynamic)['ExtraServicePrice'] ?? [],
+        specification: (doc.data() as dynamic)['Specification'] ?? [],
+        specificationPrice: (doc.data() as dynamic)['SpecificationPrice'] ?? [],
+        // price: (doc.data() as dynamic)['Price'] ?? 0.0,
         documentId: doc.reference.id,
       );
     }).toList();

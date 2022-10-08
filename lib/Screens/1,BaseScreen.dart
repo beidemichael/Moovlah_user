@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,8 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
 import 'package:moovlah_user/Screens/1.2,BaseScreenWidgets/1,AddLocationCard.dart';
 import 'package:moovlah_user/Screens/1.2,BaseScreenWidgets/2,VehiclesListCard.dart';
+import 'package:moovlah_user/Shared/YellowButton.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/OrderModel.dart';
 import '1.3,Drawer/DrawerContent.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -18,20 +22,20 @@ class BaseScreen extends StatefulWidget {
 
 class _BaseScreenState extends State<BaseScreen> {
   ScrollController? scrollController;
-  List<LocationList> locationList = [
-    LocationList(name: 'Pick-up location', location: LatLng(0.0, 0.0),description: '' ),
-    LocationList(name: 'Drop-off location', location: LatLng(0.0, 0.0), description: '')
-  ];
   int checkedindex = 10000;
-   @override
+ 
+
+  @override
   void initState() {
     super.initState();
     scrollController = ScrollController();
-    
   }
+
   @override
   Widget build(BuildContext context) {
     final vehicles = Provider.of<List<Vehicles>>(context);
+    final vehicleName = Provider.of<Order>(context).vehicleNameDisplay;
+    final vehicleAndLocationComplete = Provider.of<Order>(context).checkLocationInputIsAllFilled();
     return Scaffold(
       drawer: const DrawerContent(),
       appBar: AppBar(
@@ -47,56 +51,91 @@ class _BaseScreenState extends State<BaseScreen> {
           iconTheme: const IconThemeData(color: Colors.black)),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
-        child: ListView(
-          physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics()),
+        child: Stack(
           children: [
-            AddLocation(
-              locationList: locationList,
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-               physics: const NeverScrollableScrollPhysics(),
-              itemCount: vehicles.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      checkedindex = index;
-                    });
+            ListView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              children: [
+                AddLocation(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: vehicles.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        // setState(() {
+                        //   checkedindex = index;
+                        // });
+                        Provider.of<Order>(context, listen: false).addVehicle(
+                            vehicles[index].type, vehicles[index].price);
+                      },
+                      child: Stack(
+                        children: [
+                          VehiclesList(
+                              vehicle: vehicles[index],
+                              index: index,),
+                          vehicleName == vehicles[index].type
+                              ? index % 2 == 0
+                                  ? const Positioned(
+                                      top: 5,
+                                      left: 15,
+                                      child: Icon(
+                                        FontAwesomeIcons.solidCircleCheck,
+                                        size: 25.0,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                                  : const Positioned(
+                                      top: 5,
+                                      right: 15,
+                                      child: Icon(
+                                        FontAwesomeIcons.solidCircleCheck,
+                                        size: 25.0,
+                                        color: Colors.black,
+                                      ),
+                                    )
+                              : Container(
+                                  height: 1, width: 1, color: Colors.red)
+                        ],
+                      ),
+                    );
                   },
-                  child: Stack(
-                    children: [
-                      VehiclesList(
-                          vehicle: vehicles[index],
-                          index: index,
-                          checkedindex: checkedindex),
-                      checkedindex == index
-                          ? index % 2 == 0
-                              ? const Positioned(
-                                  top: 5,
-                                  left: 15,
-                                  child: Icon(
-                                    FontAwesomeIcons.solidCircleCheck,
-                                    size: 25.0,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : const Positioned(
-                                  top: 5,
-                                  right: 15,
-                                  child: Icon(
-                                    FontAwesomeIcons.solidCircleCheck,
-                                    size: 25.0,
-                                    color: Colors.black,
-                                  ),
-                                )
-                          : Container(height: 1, width: 1, color: Colors.red)
-                    ],
-                  ),
-                );
-              },
+                ),
+                
+              ],
             ),
+            vehicleAndLocationComplete == true
+                ? Positioned(
+                    bottom: 0,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade400,
+                            blurRadius: 1055.0, //effect of softening the shadow
+                            spreadRadius: 1.7, //effecet of extending the shadow
+                            offset: const Offset(
+                                0.0, //horizontal
+                                -40.0 //vertical
+                                ),
+                          ),
+                        ],
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 60.0, bottom: 20),
+                        child: Center(child: YellowButton(text: 'Next')),
+                      ),
+                    ),
+                  )
+                : Container()
           ],
         ),
       ),

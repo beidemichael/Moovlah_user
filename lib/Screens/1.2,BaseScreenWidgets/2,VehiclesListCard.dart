@@ -2,18 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
+import 'package:provider/provider.dart';
 
+import '../../Models/OrderModel.dart';
 import '2,VehiclesListWidgets/ExtraServices.dart';
+import '2,VehiclesListWidgets/Specifications.dart';
 
 class VehiclesList extends StatefulWidget {
   final Vehicles vehicle;
   final int index;
-  int checkedindex;
   VehiclesList(
       {super.key,
       required this.vehicle,
-      required this.index,
-      required this.checkedindex});
+      required this.index,});
 
   @override
   State<VehiclesList> createState() => _VehiclesListState();
@@ -22,6 +23,7 @@ class VehiclesList extends StatefulWidget {
 class _VehiclesListState extends State<VehiclesList> {
   @override
   Widget build(BuildContext context) {
+    final vehicleName = Provider.of<Order>(context).vehicleNameDisplay;
     return Column(
       children: [
         Padding(
@@ -184,11 +186,18 @@ class _VehiclesListState extends State<VehiclesList> {
             ),
           ),
         ),
-        widget.checkedindex == widget.index
+       vehicleName == widget.vehicle.type
             ? ExtraServices(
                 vehicle: widget.vehicle,
               )
-            : Container()
+            : Container(),
+        vehicleName == widget.vehicle.type
+            ? widget.vehicle.specification.length!=0
+                ? Specifications(
+                    vehicle: widget.vehicle,
+                  )
+                : Container()
+            : Container(),
       ],
     );
   }

@@ -4,20 +4,22 @@ import 'package:provider/provider.dart';
 import '../../../Models/OrderModel.dart';
 import '../../../Models/models.dart';
 
-class ExtraServices extends StatefulWidget {
+class Specifications extends StatefulWidget {
   final Vehicles vehicle;
-  const ExtraServices({super.key, required this.vehicle});
+
+  const Specifications({super.key, required this.vehicle});
 
   @override
-  State<ExtraServices> createState() => _ExtraServicesState();
+  State<Specifications> createState() => _SpecificationsState();
 }
 
-class _ExtraServicesState extends State<ExtraServices> {
+class _SpecificationsState extends State<Specifications> {
   @override
   Widget build(BuildContext context) {
-    final vehicleService = Provider.of<Order>(context).vehicleServiceDisplay;
+    final vehicleSpecification =
+        Provider.of<Order>(context).vehicleSpecificationDisplay;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 0),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         // color: Colors.red,
@@ -25,7 +27,7 @@ class _ExtraServicesState extends State<ExtraServices> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Extra Services',
+              'Specifications',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
@@ -34,25 +36,24 @@ class _ExtraServicesState extends State<ExtraServices> {
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: widget.vehicle.extraService.length,
+              itemCount: widget.vehicle.specification.length,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Provider.of<Order>(context, listen: false).addExtraService(
-                        widget.vehicle.extraService[index],
-                        widget.vehicle.extraServicePrice[index].toDouble());
+                    Provider.of<Order>(context, listen: false).addSpecification(
+                        widget.vehicle.specification[index],
+                        widget.vehicle.specificationPrice[index].toDouble());
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: vehicleService
-                                .contains(widget.vehicle.extraService[index])
+                        color: vehicleSpecification
+                                .contains(widget.vehicle.specification[index])
                             ? Colors.yellow.shade200
                             : Colors.white,
-                        border:
-                            Border.all(width: 1, color: Colors.grey.shade500),
+                        border: Border.all(width: 1, color: Colors.grey.shade500),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10.0),
                         ),
@@ -64,7 +65,7 @@ class _ExtraServicesState extends State<ExtraServices> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              widget.vehicle.extraService[index],
+                              widget.vehicle.specification[index],
                               style: const TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
@@ -72,7 +73,7 @@ class _ExtraServicesState extends State<ExtraServices> {
                             ),
                             Text(
                               r'S$' +
-                                  widget.vehicle.extraServicePrice[index]
+                                  widget.vehicle.specificationPrice[index]
                                       .toString(),
                               style: const TextStyle(
                                   fontWeight: FontWeight.w400,
