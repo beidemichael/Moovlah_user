@@ -7,24 +7,30 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:location/location.dart';
 import 'package:moovlah_user/Models/models.dart';
-
+import 'package:provider/provider.dart';
+import 'dart:async';
+import '../../Models/OrderModel.dart';
 import '1.2,Map.dart';
 
 class LocationSearchScreen extends StatefulWidget {
-  LocationList location;
-  LocationSearchScreen({super.key, required this.location});
+  int index;
+  LocationSearchScreen({super.key, required this.index});
 
   @override
   State<LocationSearchScreen> createState() => _LocationSearchScreenState();
 }
 
 class _LocationSearchScreenState extends State<LocationSearchScreen> {
-  GoogleMapController? mapController; //contrller for Google map
+  Completer<GoogleMapController> mapController = Completer();
+  // GoogleMapController? mapController; //contrller for Google map
   CameraPosition? cameraPosition;
   String location = "Search Location";
+  late String description;
+  var coordinate;
 
   @override
   Widget build(BuildContext context) {
+    final locationList = Provider.of<Order>(context).locationListDisplay;
     return Scaffold(
       body: Stack(
         children: [
@@ -32,7 +38,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
             child: MapForLocation(
               mapController: mapController,
               cameraPosition: cameraPosition,
-              location: widget.location,
+              index: widget.index,
             ),
           ),
 
@@ -55,13 +61,8 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                     });
 
                 if (place != null) {
-                  if (mounted) {
-                    setState(() {
-                      location = place.description.toString();
-                      widget.location.description =
-                          place.description.toString();
-                    });
-                  }
+                  location = place.description.toString();
+                  description = place.description.toString();
 
                   //form google_maps_webservice package
                   final plist = GoogleMapsPlaces(
@@ -77,24 +78,30 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                   var newlatlang = LatLng(lat, lang);
 
                   //move map camera to selected place with animation
-                  if (mounted) {
-                    setState(() {
-                      mapController?.animateCamera(
-                          CameraUpdate.newCameraPosition(
-                              CameraPosition(target: newlatlang, zoom: 17)));
-                      widget.location.location = LatLng(lat, lang);
-                    });
-                  }
+
+                  // if (mounted) {
+                  //   setState(() {
+                      // mapController?.animateCamera(
+                      //     CameraUpdate.newCameraPosition(
+                      //         CameraPosition(target: newlatlang, zoom: 17)));
+                      coordinate = LatLng(lat, lang);
+                      // ignore: use_build_context_synchronously
+                      Provider.of<Order>(context, listen: false)
+                          .addLocationPosition(
+                              description, coordinate, widget.index);
+                    // });
+                  // }
+
                 }
               },
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical:5),
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
                     boxShadow: [
-                       BoxShadow(
+                      BoxShadow(
                         color: Colors.grey.shade500,
                         blurRadius: 1.0, //effect of softening the shadow
                         spreadRadius: 0.1, //effecet of extending the shadow
@@ -118,7 +125,8 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                         child: const Icon(Icons.arrow_back)),
                     title: Text(
                       location,
-                      style: const TextStyle(fontSize: 18, color: Color.fromARGB(255, 63, 63, 63)),
+                      style: const TextStyle(
+                          fontSize: 18, color: Color.fromARGB(255, 63, 63, 63)),
                     ),
                     trailing: const Icon(Icons.search),
                     dense: true,

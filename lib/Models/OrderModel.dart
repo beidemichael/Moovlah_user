@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
@@ -9,6 +11,9 @@ class Order extends ChangeNotifier {
   List extraServicePrice = [];
   List specificationName = [];
   List specificationPrice = [];
+  String orderRemark = '';
+  bool favouriteDriverFirst = false;
+  var moreDetailsImage;
   List<LocationList> locationList = [
     LocationList(
         name: 'Pick-up location',
@@ -29,8 +34,10 @@ class Order extends ChangeNotifier {
   bool vehicleSelected = false;
   bool vehicleAndLocationComplete = false;
   int completeLocations = 0;
-
+  bool get favouriteDriverFirstDisplay => favouriteDriverFirst;
+      get moreDetailsImageDisplay => moreDetailsImage;
   List get locationListDisplay => locationList;
+
   String get vehicleNameDisplay => vehicleName;
   List get vehicleServiceDisplay => extraServiceName;
   List get vehicleSpecificationDisplay => specificationName;
@@ -55,9 +62,28 @@ class Order extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addLocationInfo(String phoneNumberFunction, String contactNameFunction,
+      String floorAndUnitNumberFunction, int indexFunction) {
+    locationList[indexFunction].contactName = contactNameFunction;
+    locationList[indexFunction].phoneNumber = phoneNumberFunction;
+    locationList[indexFunction].floorAndUnitNumber = floorAndUnitNumberFunction;
+    notifyListeners();
+  }
+
+  void addLocationPosition(
+      String descriptionFunction, var locationFunction, int indexFunction) {
+    locationList[indexFunction].description = descriptionFunction;
+    locationList[indexFunction].location = locationFunction;
+    notifyListeners();
+  }
+
   void removeLocation(int index) {
     locationList.remove(locationList[index]);
     notifyListeners();
+  }
+
+  locationDescription(int indexFunction) {
+    return locationList[indexFunction].description;
   }
 
   void addVehicle(String vehicleNameFunction, double vehiclePriceFunction) {
@@ -123,10 +149,24 @@ class Order extends ChangeNotifier {
     }
     if (vehicleSelected == true && locationListComplete == true) {
       vehicleAndLocationComplete = true;
-    }
-    else{
+    } else {
       vehicleAndLocationComplete = false;
     }
     return vehicleAndLocationComplete;
+  }
+
+  void addNote(String noteFunction) {
+    orderRemark = noteFunction;
+    notifyListeners();
+  }
+
+  void selectFavouriteDriverFirst() {
+    favouriteDriverFirst = !favouriteDriverFirst;
+    notifyListeners();
+  }
+
+  void addMoreDetailsImage(File moreDetailsImageFunction) {
+    moreDetailsImage = moreDetailsImageFunction;
+    notifyListeners();
   }
 }

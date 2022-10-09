@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 import '../../Models/OrderModel.dart';
-import '../../Models/models.dart';
 import '1.1,LocationSearchScreen.dart';
 
 class AddLocation extends StatefulWidget {
@@ -88,7 +87,7 @@ class _AddLocationState extends State<AddLocation> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (_) => LocationSearchScreen(
-                                            location: locationList[index],
+                                            index: index,
                                           )));
                             },
                             child: Padding(

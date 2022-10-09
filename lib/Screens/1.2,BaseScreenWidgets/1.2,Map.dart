@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -5,18 +7,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:moovlah_user/Shared/YellowButton.dart';
+import 'package:provider/provider.dart';
 
+import '../../Models/OrderModel.dart';
 import '../../Models/models.dart';
 
 class MapForLocation extends StatefulWidget {
-  GoogleMapController? mapController; //contrller for Google map
+  Completer<GoogleMapController> mapController; //contrller for Google map
   CameraPosition? cameraPosition;
-  LocationList location;
+  int index;
   MapForLocation(
       {super.key,
       required this.cameraPosition,
       required this.mapController,
-      required this.location});
+      required this.index});
 
   @override
   State<MapForLocation> createState() => _MapForLocationState();
@@ -27,6 +31,8 @@ class _MapForLocationState extends State<MapForLocation> {
   bool loading = false;
   String phoneCode = "+65";
   String phoneNumber = "";
+  String contactName = "";
+  String floorAndUnitNumber = "";
 
   void initState() {
     super.initState();
@@ -83,38 +89,31 @@ class _MapForLocationState extends State<MapForLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return loading == true
-        ? const Center(
-            child: SpinKitCircle(
-            color: Colors.black,
-            size: 50.0,
-          ))
-        : Stack(
+    String locationListDescription =
+        Provider.of<Order>(context).locationDescription(widget.index);
+    return 
+    // loading == true
+    //     ? const Center(
+    //         child: SpinKitCircle(
+    //         color: Colors.black,
+    //         size: 50.0,
+    //       ))
+    //     : 
+        Stack(
             children: [
-              GoogleMap(
-                mapType: MapType.normal,
-
-                tiltGesturesEnabled: false,
-                initialCameraPosition: CameraPosition(
-                  tilt: 0,
-                  bearing: 0,
-                  target: _initialPosition,
-                  zoom: 17.00,
-                ),
-
-                // _markers,
-                compassEnabled: false,
-                zoomControlsEnabled: false,
-                // rotateGesturesEnabled: false,
-                mapToolbarEnabled: false,
-                onMapCreated: (GoogleMapController controller) {
-                  if (mounted) {
-                    setState(() {
-                      widget.mapController = controller;
-                    });
-                  }
-                },
-              ),
+              // GoogleMap(
+              //   mapType: MapType.normal,
+              //   tiltGesturesEnabled: false,
+              //   initialCameraPosition: CameraPosition(
+              //     tilt: 0,
+              //     bearing: 0,
+              //     target: _initialPosition,
+              //     zoom: 17.00,
+              //   ),
+              //   onMapCreated: (GoogleMapController controller) {
+              //     widget.mapController.complete(controller);
+              //   },
+              // ),
               Positioned(
                 bottom: 0,
                 child: Container(
@@ -189,9 +188,10 @@ class _MapForLocationState extends State<MapForLocation> {
                                       child: TextFormField(
                                         onChanged: (val) {
                                           setState(() {
-                                            phoneNumber = val;
-                                            widget.location.phoneNumber =
-                                                phoneCode + phoneNumber.trim();
+                                            phoneNumber =
+                                                phoneCode + val.trim();
+                                            // widget.location.phoneNumber =
+                                            //     phoneCode + phoneNumber.trim();
                                           });
                                         },
                                         keyboardType: TextInputType.phone,
@@ -234,7 +234,8 @@ class _MapForLocationState extends State<MapForLocation> {
                                       child: TextFormField(
                                         onChanged: (val) {
                                           setState(() {
-                                            widget.location.contactName = val;
+                                            contactName = val;
+                                            // widget.location.contactName = val;
                                           });
                                         },
                                         style: TextStyle(
@@ -276,8 +277,9 @@ class _MapForLocationState extends State<MapForLocation> {
                                       child: TextFormField(
                                         onChanged: (val) {
                                           setState(() {
-                                            widget.location.floorAndUnitNumber =
-                                                val;
+                                            floorAndUnitNumber = val;
+                                            // widget.location.floorAndUnitNumber =
+                                            //     val;
                                           });
                                         },
                                         style: TextStyle(
@@ -301,11 +303,18 @@ class _MapForLocationState extends State<MapForLocation> {
                             ),
                           ],
                         ),
-                        GestureDetector(
+                        locationListDescription != ''
+                                ?GestureDetector(
                             onTap: () {
-                              Navigator.of(context).pop();
+                              if (locationListDescription != '') {
+                                Provider.of<Order>(context, listen: false)
+                                    .addLocationInfo(phoneNumber, contactName,
+                                        floorAndUnitNumber, widget.index);
+                                Navigator.of(context).pop();
+                              }
                             },
-                            child: YellowButton(text: 'Confirm')),
+                            child:  YellowButton(text: 'Confirm')
+                                ):YellowButton(text: 'Waiting...'),
                       ],
                     ),
                   ),
