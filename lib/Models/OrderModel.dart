@@ -13,6 +13,7 @@ class Order extends ChangeNotifier {
   List specificationPrice = [];
   String orderRemark = '';
   bool favouriteDriverFirst = false;
+  bool cash = false;
   var moreDetailsImage;
   List<LocationList> locationList = [
     LocationList(
@@ -35,7 +36,8 @@ class Order extends ChangeNotifier {
   bool vehicleAndLocationComplete = false;
   int completeLocations = 0;
   bool get favouriteDriverFirstDisplay => favouriteDriverFirst;
-      get moreDetailsImageDisplay => moreDetailsImage;
+  bool get cashDisplay => cash;
+  get moreDetailsImageDisplay => moreDetailsImage;
   List get locationListDisplay => locationList;
 
   String get vehicleNameDisplay => vehicleName;
@@ -167,6 +169,11 @@ class Order extends ChangeNotifier {
 
   void addMoreDetailsImage(File moreDetailsImageFunction) {
     moreDetailsImage = moreDetailsImageFunction;
+    notifyListeners();
+  }
+
+  void selectCash() {
+    cash = !cash;
     notifyListeners();
   }
 }

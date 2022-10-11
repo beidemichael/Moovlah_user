@@ -8,6 +8,7 @@ import 'package:moovlah_user/Shared/YellowButton.dart';
 import 'package:provider/provider.dart';
 
 import '2.1, AddNotes.dart';
+import '2.3, PaymentBreakUp.dart';
 
 class AddMoreDetail extends StatefulWidget {
   const AddMoreDetail({super.key});
@@ -28,6 +29,24 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
       Provider.of<Order>(context, listen: false)
           .addMoreDetailsImage(imageFile!);
     });
+  }
+
+  void paymentBreakUp() {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: FractionallySizedBox(
+              heightFactor: 0.6,
+              child: Container(
+                child: PaymentBreakUp(),
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -274,7 +293,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
               padding: const EdgeInsets.only(bottom: 32.0),
               child: GestureDetector(
                   onTap: () {
-                   
+                    paymentBreakUp();
                   },
                   child: YellowButton(text: 'Next')),
             ),
