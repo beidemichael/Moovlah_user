@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, deprecated_member_use, avoid_unnecessary_containers
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -42,7 +44,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
             child: FractionallySizedBox(
               heightFactor: 0.6,
               child: Container(
-                child: PaymentBreakUp(),
+                child: const PaymentBreakUp(),
               ),
             ),
           );

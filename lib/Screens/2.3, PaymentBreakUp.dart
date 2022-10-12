@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -60,10 +62,12 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                           setState(() {
                             paymentLoading = true;
                           });
-                          Provider.of<Order>(context, listen: false)
-                              .selectCash();
+                          if (cash == true) {
+                            Provider.of<Order>(context, listen: false)
+                                .selectCash();
+                          }
+
                           controller.makePayment(amount: '5', currency: 'USD');
-                          
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -112,13 +116,14 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                           fontSize: 18.0,
                                           color: Color.fromARGB(255, 0, 0, 0)),
                                     ),
-                                    
                                   ],
                                 ),
-                                paymentLoading==true ? const SpinKitCircle(
-                                  color: Colors.black,
-                                  size: 20.0,
-                                ): Container()
+                                paymentLoading == true
+                                    ? const SpinKitCircle(
+                                        color: Colors.black,
+                                        size: 20.0,
+                                      )
+                                    : Container()
                               ],
                             ),
                           ),

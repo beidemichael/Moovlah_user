@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, file_names, sort_child_properties_last
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,14 +25,15 @@ class _DrawerContentState extends State<DrawerContent> {
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(width: 2, color: Colors.black),
+        // ignore: prefer_const_constructors
         borderRadius: BorderRadius.only(
-          topRight: Radius.circular(55.0),
-          bottomRight: Radius.circular(55.0),
+          topRight: const Radius.circular(55.0),
+          bottomRight: const Radius.circular(55.0),
         ),
       ),
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Container(
@@ -43,7 +46,7 @@ class _DrawerContentState extends State<DrawerContent> {
                     color: Colors.grey.shade900,
                     blurRadius: 2.0, //effect of softening the shadow
                     spreadRadius: 1, //effecet of extending the shadow
-                    offset: Offset(
+                    offset: const Offset(
                         0.0, //horizontal
                         1.0 //vertical
                         ),
@@ -53,7 +56,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 color: Colors.white,
               ),
               decoration: BoxDecoration(
-                color: Color(0xFFFFF600),
+                color: const Color(0xFFFFF600),
                 border: Border.all(width: 1, color: Colors.black),
                 borderRadius: BorderRadius.circular(100),
               )),
@@ -63,9 +66,9 @@ class _DrawerContentState extends State<DrawerContent> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical:30.0),
-                  child: const Text('Name',
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical:30.0),
+                  child: Text('Name',
                       style: TextStyle(
                           fontSize: 35.0,
                           color: Colors.black,
@@ -74,7 +77,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => Orders()));
+                        MaterialPageRoute(builder: (_) => const Orders()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -87,16 +90,16 @@ class _DrawerContentState extends State<DrawerContent> {
                               color: Colors.grey.shade900,
                               blurRadius: 2.0, //effect of softening the shadow
                               spreadRadius: 1, //effecet of extending the shadow
-                              offset: Offset(
+                              offset: const Offset(
                                   0.0, //horizontal
                                   0.0 //vertical
                                   ),
                             ),
                           ],
                           size: 25.0,
-                          color: Color(0xFFFFF600),
+                          color: const Color(0xFFFFF600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         const Text('Orders',
@@ -111,7 +114,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => Drivers()));
+                        MaterialPageRoute(builder: (_) => const Drivers()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -124,16 +127,16 @@ class _DrawerContentState extends State<DrawerContent> {
                               color: Colors.grey.shade900,
                               blurRadius: 2.0, //effect of softening the shadow
                               spreadRadius: 1, //effecet of extending the shadow
-                              offset: Offset(
+                              offset: const Offset(
                                   0.0, //horizontal
                                   0.0 //vertical
                                   ),
                             ),
                           ],
                           size: 25.0,
-                          color: Color(0xFFFFF600),
+                          color: const Color(0xFFFFF600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         const Text('Drivers',
@@ -148,7 +151,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => Help()));
+                        MaterialPageRoute(builder: (_) => const Help()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -161,16 +164,16 @@ class _DrawerContentState extends State<DrawerContent> {
                               color: Colors.grey.shade900,
                               blurRadius: 2.0, //effect of softening the shadow
                               spreadRadius: 1, //effecet of extending the shadow
-                              offset: Offset(
+                              offset: const Offset(
                                   0.0, //horizontal
                                   0.0 //vertical
                                   ),
                             ),
                           ],
                           size: 25.0,
-                          color: Color(0xFFFFF600),
+                          color: const Color(0xFFFFF600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         const Text('Help',
@@ -185,7 +188,7 @@ class _DrawerContentState extends State<DrawerContent> {
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => Setting()));
+                        MaterialPageRoute(builder: (_) => const Setting()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -198,16 +201,16 @@ class _DrawerContentState extends State<DrawerContent> {
                               color: Colors.grey.shade900,
                               blurRadius: 2.0, //effect of softening the shadow
                               spreadRadius: 1, //effecet of extending the shadow
-                              offset: Offset(
+                              offset: const Offset(
                                   0.0, //horizontal
                                   0.0 //vertical
                                   ),
                             ),
                           ],
                           size: 25.0,
-                          color: Color(0xFFFFF600),
+                          color: const Color(0xFFFFF600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         const Text('Setting',

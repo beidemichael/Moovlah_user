@@ -39,7 +39,7 @@ class _AddNotesState extends State<AddNotes> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: const Center(
                   child: Text(

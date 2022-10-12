@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 class Drivers extends StatefulWidget {
   const Drivers({super.key});
@@ -17,14 +19,14 @@ class _DriversState extends State<Drivers> {
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Drivers',
+              const Text('Drivers',
                   style: TextStyle(
                       fontSize: 21.0,
                       color: Colors.black,
                       fontWeight: FontWeight.w600)),
             ],
           ),
-          iconTheme: IconThemeData(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Colors.black)),
       body: Container(),
     );
   }

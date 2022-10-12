@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +42,7 @@ class _AddLocationState extends State<AddLocation> {
         ),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               // color: Colors.green,
               height: 60 * locationList.length.toDouble(),
               child: ListView.builder(
@@ -93,7 +95,7 @@ class _AddLocationState extends State<AddLocation> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(left: 50.0, right: 25),
-                              child: Container(
+                              child: SizedBox(
                                 height: 60,
                                 // color: Colors.red[200],
                                 child: Column(

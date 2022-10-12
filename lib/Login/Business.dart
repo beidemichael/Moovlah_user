@@ -1,36 +1,44 @@
-import 'package:flutter/material.dart';
-import 'package:moovlah_user/Shared/YellowButton.dart';
-import 'package:provider/provider.dart';
+// ignore_for_file: file_names, prefer_const_constructors_in_immutables, prefer_const_constructors
 
-import '../Models/models.dart';
-import '../Screens/1,BaseScreen.dart';
-import '../Service/Database.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moovlah_user/Shared/YellowButton.dart';
+import '../Service/auth.dart';
 
 class Business extends StatefulWidget {
-  const Business({super.key});
+  Business({super.key});
 
   @override
   State<Business> createState() => _BusinessState();
 }
 
 class _BusinessState extends State<Business> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? businessName;
+  String? firstName;
+  String? phoneNumber;
+  String? email;
+  String? password;
+  bool isLoading = false;
+  bool _passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Column(
+      body: Center(
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Create A Business Account',
+                  const Text('Create A Business Account',
                       style: TextStyle(
                           fontSize: 25.0,
                           color: Colors.black,
                           fontWeight: FontWeight.w600)),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   Padding(
@@ -38,17 +46,22 @@ class _BusinessState extends State<Business> {
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          // phoneNumber = val;
+                          businessName = val;
                         });
                       },
-                      keyboardType: TextInputType.phone,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 20, top: 30, bottom: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
                         labelText: 'Business Name',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -57,18 +70,17 @@ class _BusinessState extends State<Business> {
                             color: Colors.grey[800]),
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400)),
+                                const BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             borderSide:
                                 BorderSide(color: Colors.orange.shade200)),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Padding(
@@ -76,17 +88,22 @@ class _BusinessState extends State<Business> {
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          // phoneNumber = val;
+                          firstName = val;
                         });
                       },
-                      keyboardType: TextInputType.phone,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 20, top: 30, bottom: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
                         labelText: 'First Name',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -95,18 +112,17 @@ class _BusinessState extends State<Business> {
                             color: Colors.grey[800]),
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400)),
+                                const BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             borderSide:
                                 BorderSide(color: Colors.orange.shade200)),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Padding(
@@ -114,8 +130,14 @@ class _BusinessState extends State<Business> {
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          // phoneNumber = val;
+                          phoneNumber = val;
                         });
+                      },
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
                       },
                       keyboardType: TextInputType.phone,
                       style: TextStyle(
@@ -123,8 +145,8 @@ class _BusinessState extends State<Business> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 20, top: 30, bottom: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
                         labelText: 'Phone Number',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -133,18 +155,17 @@ class _BusinessState extends State<Business> {
                             color: Colors.grey[800]),
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400)),
+                                const BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             borderSide:
                                 BorderSide(color: Colors.orange.shade200)),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Padding(
@@ -152,17 +173,23 @@ class _BusinessState extends State<Business> {
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          // phoneNumber = val;
+                          email = val;
                         });
                       },
-                      keyboardType: TextInputType.phone,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
                       style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 20, top: 30, bottom: 10),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
                         labelText: 'Work Email',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -171,18 +198,17 @@ class _BusinessState extends State<Business> {
                             color: Colors.grey[800]),
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400)),
+                                const BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             borderSide:
                                 BorderSide(color: Colors.orange.shade200)),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
                   Padding(
@@ -190,17 +216,38 @@ class _BusinessState extends State<Business> {
                     child: TextFormField(
                       onChanged: (val) {
                         setState(() {
-                          // phoneNumber = val;
+                          password = val;
                         });
                       },
-                      keyboardType: TextInputType.phone,
+                      validator: (val) {
+                        if (val!.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        return null;
+                      },
                       style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
+                          obscureText: !_passwordVisible,
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.only(
-                            left: 20, top: 30, bottom: 10),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            // Based on passwordVisible state choose the icon
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Color.fromARGB(255, 190, 184, 0),
+                          ),
+                          onPressed: () {
+                            // Update the state i.e. toogle the state of passwordVisible variable
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        ),
+                        contentPadding:
+                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
                         labelText: 'Password',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -209,37 +256,47 @@ class _BusinessState extends State<Business> {
                             color: Colors.grey[800]),
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400)),
+                                const BorderRadius.all(Radius.circular(20.0)),
+                            borderSide: BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                                const BorderRadius.all(Radius.circular(20.0)),
                             borderSide:
                                 BorderSide(color: Colors.orange.shade200)),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 100,
                   ),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    StreamProvider<List<Vehicles>>.value(
-                                        value: DatabaseService().vehicles,
-                                        initialData: [],
-                                        catchError: (_, __) => [],
-                                        child: BaseScreen())));
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        if (_formKey.currentState!.validate()) {
+                          await AuthServices.signUpEmailAndPassword(
+                            context: context,
+                            emailAddress: email!,
+                            password: password!,
+                          );
+                        }
+                        
+                        setState(() {
+                          isLoading = false;
+                        });
                       },
-                      child: YellowButton(text: 'Next'))
+                      child: isLoading
+                          ? const Center(
+                              child: SpinKitCircle(
+                              color: Colors.black,
+                              size: 50.0,
+                            ))
+                          : YellowButton(text: 'Next'))
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

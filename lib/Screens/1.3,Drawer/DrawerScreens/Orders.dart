@@ -1,3 +1,7 @@
+// ignore: duplicate_ignore
+// ignore: file_names
+// ignore_for_file: file_names, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 class Orders extends StatefulWidget {
   const Orders({super.key});
@@ -17,14 +21,14 @@ class _OrdersState extends State<Orders> {
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Orders',
+              const Text('Orders',
                   style: TextStyle(
                       fontSize: 21.0,
                       color: Colors.black,
                       fontWeight: FontWeight.w600)),
             ],
           ),
-          iconTheme: IconThemeData(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Colors.black)),
       body: Container(),
     );
   }

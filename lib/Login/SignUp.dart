@@ -1,37 +1,41 @@
-import 'package:flutter/material.dart';
-import 'package:moovlah_user/Login/Business.dart';
-import 'package:moovlah_user/Login/Personal.dart';
+// ignore_for_file: file_names, prefer_const_constructors_in_immutables, unused_local_variable
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Models/OrderModel.dart';
+
+class SignUpPage extends StatefulWidget {
+  SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              // ignore: prefer_const_literals_to_create_immutables
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 150,
                 ),
-                Text('Select your account type',
+                const Text('Select your account type',
                     style: TextStyle(
                         fontSize: 25.0,
                         color: Colors.black,
                         fontWeight: FontWeight.w600)),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Text('What type of delivery do you need',
+                const Text('What type of delivery do you need',
                     style: TextStyle(
                         fontSize: 23.0,
                         color: Colors.black,
@@ -39,18 +43,18 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
           ),
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Personal()));
+                    Provider.of<Order>(context, listen: false)
+                        .changeScreen('personal');
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -65,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('Personal',
+                          const Text('Personal',
                               style: TextStyle(
                                   fontSize: 21.0,
                                   color: Colors.black,
@@ -81,8 +85,8 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Business()));
+                    Provider.of<Order>(context, listen: false)
+                        .changeScreen('business');
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -90,14 +94,15 @@ class _LoginPageState extends State<LoginPage> {
                     child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: 165,
+                        // ignore: sort_child_properties_last
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Image.asset(
                               'assets/undraw_business_chat_re_gg4h.png',
-                                 height: 120,
+                              height: 120,
                             ),
-                            Text('Business',
+                            const Text('Business',
                                 style: TextStyle(
                                     fontSize: 21.0,
                                     color: Colors.black,
@@ -109,6 +114,36 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(10.0),
                         )),
                   ),
+                ),
+                // ignore: prefer_const_constructors
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Already have an account? ',
+                        style: TextStyle(
+                            fontSize: 19.0,
+                            color: Color.fromARGB(255, 92, 92, 92),
+                            fontWeight: FontWeight.w400)),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<Order>(context, listen: false)
+                            .changeScreen('login');
+                      },
+                      child: const Text('Login',
+                          style: TextStyle(
+                              fontSize: 19.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500)),
+                    ),
+                    const Text(' here.',
+                        style: TextStyle(
+                            fontSize: 19.0,
+                            color: Color.fromARGB(255, 92, 92, 92),
+                            fontWeight: FontWeight.w400)),
+                  ],
                 ),
               ],
             ),

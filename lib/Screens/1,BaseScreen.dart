@@ -1,6 +1,5 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, file_names, unused_import
 
-import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -59,7 +58,7 @@ class _BaseScreenState extends State<BaseScreen> {
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               children: [
-                AddLocation(),
+                const AddLocation(),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -154,7 +153,7 @@ class _BaseScreenState extends State<BaseScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => 
-                                        AddMoreDetail()
+                                        const AddMoreDetail()
                                       ),
                                     );
                                   },

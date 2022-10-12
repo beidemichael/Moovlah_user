@@ -1,9 +1,10 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class PaymentController extends GetxController {
   Map<String, dynamic>? paymentIntentData;
@@ -77,7 +78,7 @@ class PaymentController extends GetxController {
       if (e is StripeException) {
         print("Error from Stripe: ${e.error.localizedMessage}");
       } else {
-        print("Unforeseen error: ${e}");
+        print("Unforeseen error: $e");
       }
     } catch (e) {
       print("exception:$e");
@@ -100,6 +101,7 @@ class PaymentController extends GetxController {
                 'Bearer sk_test_51LrDO4Gi9PXHjIudNjj7bTdr6HZ7fqkeIJMy8rPZI1IJsW7rCWuSS64pfZRY0Gxoz1sp99BOISUBLUc0JWRvZNSw00DUVXJbe2',
             'Content-Type': 'application/x-www-form-urlencoded'
           });
+          print('Payment Intent Body->>> ${response.body.toString()}');
       return jsonDecode(response.body);
     } catch (err) {
       print('err charging user: ${err.toString()}');

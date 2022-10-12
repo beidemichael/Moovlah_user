@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_const_constructors_in_immutables, avoid_unnecessary_containers, prefer_interpolation_to_compose_strings, prefer_is_empty
+
 import 'package:cached_network_image/cached_network_image.dart';
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -87,7 +89,7 @@ class _VehiclesListState extends State<VehiclesList> {
                                     progressIndicatorBuilder:
                                         (context, url, downloadProgress) =>
                                             Center(
-                                      child: Container(
+                                      child: SizedBox(
                                         height: 30,
                                         width: 30,
                                         child: CircularProgressIndicator(

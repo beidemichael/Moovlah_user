@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_generic_function_type_aliases
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

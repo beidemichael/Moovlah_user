@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, must_be_immutable, unused_field, unnecessary_new, no_leading_underscores_for_local_identifiers, prefer_interpolation_to_compose_strings, avoid_print, prefer_const_literals_to_create_immutables
+
 import 'dart:async';
 
 import 'package:country_code_picker/country_code_picker.dart';
@@ -34,6 +36,7 @@ class _MapForLocationState extends State<MapForLocation> {
   String contactName = "";
   String floorAndUnitNumber = "";
 
+  @override
   void initState() {
     super.initState();
     _getUserLocation();
@@ -148,7 +151,7 @@ class _MapForLocationState extends State<MapForLocation> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Adress Details',
+                                const Text('Adress Details',
                                     style: TextStyle(
                                         fontSize: 24.0,
                                         color: Colors.black,

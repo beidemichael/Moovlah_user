@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, unused_local_variable, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -12,6 +14,7 @@ import 'dart:async';
 import '../../Models/OrderModel.dart';
 import '1.2,Map.dart';
 
+// ignore: must_be_immutable
 class LocationSearchScreen extends StatefulWidget {
   int index;
   LocationSearchScreen({super.key, required this.index});

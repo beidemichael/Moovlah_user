@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables
+
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,17 +17,18 @@ class Order extends ChangeNotifier {
   bool favouriteDriverFirst = false;
   bool cash = false;
   var moreDetailsImage;
+  String screen = 'welcome';
   List<LocationList> locationList = [
     LocationList(
         name: 'Pick-up location',
-        location: LatLng(0.0, 0.0),
+        location: const LatLng(0.0, 0.0),
         description: '',
         phoneNumber: '',
         contactName: '',
         floorAndUnitNumber: ''),
     LocationList(
         name: 'Drop-off location',
-        location: LatLng(0.0, 0.0),
+        location: const LatLng(0.0, 0.0),
         description: '',
         phoneNumber: '',
         contactName: '',
@@ -44,6 +47,13 @@ class Order extends ChangeNotifier {
   List get vehicleServiceDisplay => extraServiceName;
   List get vehicleSpecificationDisplay => specificationName;
 
+  String get screenDisplay => screen;
+
+  void changeScreen(String screenFunction) {
+    screen = screenFunction;
+    notifyListeners();
+  }
+
   void addLocation(LocationList locationFunction) {
     locationList.add(locationFunction);
     notifyListeners();
@@ -60,7 +70,9 @@ class Order extends ChangeNotifier {
         contactName: '',
         floorAndUnitNumber: ''));
     locationList.add(lastLocation);
-    print('Locaion Added');
+    if (kDebugMode) {
+      print('Locaion Added');
+    }
     notifyListeners();
   }
 

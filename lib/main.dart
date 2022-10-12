@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:moovlah_user/wrapper.dart';
 import 'package:provider/provider.dart';
 
-import 'HomeScreen.dart';
+
 import 'Models/OrderModel.dart';
 import 'Models/models.dart';
+import 'Service/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,9 +31,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(body: HomeScreen()),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: StreamProvider<UserAuth?>.value(
+            value: AuthServices().user,
+            initialData: null,
+            child: const Wrapper(),
+          ),
+        ));
   }
 }
