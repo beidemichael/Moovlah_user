@@ -3,12 +3,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moovlah_user/Service/Database.dart';
 import 'package:provider/provider.dart';
 import '../Models/OrderModel.dart';
 import '../Models/models.dart';
 
 class AuthServices {
-
   static SnackBar customSnackBar({required String content}) {
     return SnackBar(
       backgroundColor: Colors.black,
@@ -19,8 +19,7 @@ class AuthServices {
     );
   }
 
-  Future<void> getFirebaseUser() async {
-  }
+  Future<void> getFirebaseUser() async {}
 
   UserAuth? userFromFirebaseUser(User? user) {
     return user != null ? UserAuth(uid: user.uid) : null;
@@ -44,10 +43,15 @@ class AuthServices {
     await FirebaseAuth.instance.signOut();
   }
 
-  static signUpEmailAndPassword(
-      {required BuildContext context,
-      required String emailAddress,
-      required String password}) async {
+  static signUpEmailAndPassword({
+    required BuildContext context,
+    required String userName,
+    required String phoneNumber,
+    required String emailAddress,
+    required String password,
+    required String type,
+    required String businessName,
+  }) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -55,6 +59,10 @@ class AuthServices {
         password: password,
       );
       Provider.of<Order>(context, listen: false).changeScreen('welcome');
+     var userUid = await credential.user?.uid;
+
+      await DatabaseService().newUserData(userName, phoneNumber, emailAddress,
+          password, type, userUid.toString(), businessName);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');

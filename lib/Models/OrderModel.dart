@@ -18,6 +18,7 @@ class Order extends ChangeNotifier {
   bool cash = false;
   var moreDetailsImage;
   String screen = 'welcome';
+  DateTime time = DateTime.now();
   List<LocationList> locationList = [
     LocationList(
         name: 'Pick-up location',
@@ -48,6 +49,7 @@ class Order extends ChangeNotifier {
   List get vehicleSpecificationDisplay => specificationName;
 
   String get screenDisplay => screen;
+  DateTime get timeDisplay => time;
 
   void changeScreen(String screenFunction) {
     screen = screenFunction;
@@ -56,6 +58,11 @@ class Order extends ChangeNotifier {
 
   void addLocation(LocationList locationFunction) {
     locationList.add(locationFunction);
+    notifyListeners();
+  }
+
+  void addTime(DateTime timeFunction) {
+    time = timeFunction;
     notifyListeners();
   }
 

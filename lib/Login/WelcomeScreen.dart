@@ -48,7 +48,7 @@ class _WelcomePageState extends State<WelcomePage> {
               },
               child: const Text('SignUp',
                   style: TextStyle(
-                      fontSize: 19.0,
+                      fontSize: 17.0,
                       color: Colors.white,
                       fontWeight: FontWeight.w400)),
             ),

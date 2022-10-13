@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moovlah_user/Service/auth.dart';
+import 'package:provider/provider.dart';
 
+import '../Models/models.dart';
 import '../Shared/YellowButton.dart';
 
 class Personal extends StatefulWidget {
@@ -189,7 +191,7 @@ class _PersonalState extends State<Personal> {
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
-                          obscureText: !_passwordVisible,
+                      obscureText: !_passwordVisible,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -243,6 +245,10 @@ class _PersonalState extends State<Personal> {
                             context: context,
                             emailAddress: email!,
                             password: password!,
+                            type: 'personal',
+                            phoneNumber: phoneNumber!,
+                            userName: userName!,
+                            businessName: ''
                           );
                         }
 

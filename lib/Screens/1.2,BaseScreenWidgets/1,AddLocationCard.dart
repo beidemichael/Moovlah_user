@@ -1,6 +1,7 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_interpolation_to_compose_strings, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,24 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     final locationList = Provider.of<Order>(context).locationListDisplay;
+    final time = Provider.of<Order>(context).time;
+    void whenScheduleUpDateTapped() {
+      DatePicker.showDateTimePicker(context,
+          // minTime: DateTime.now(),
+          showTitleActions: true,
+          theme: const DatePickerTheme(
+              containerHeight: 400,
+              itemStyle: TextStyle(color: Colors.black, fontSize: 18),
+              doneStyle: TextStyle(color: Colors.black, fontSize: 16)),
+          onChanged: (date) {
+        print('change $date in time zone ' +
+            date.timeZoneOffset.inHours.toString());
+      }, onConfirm: (date) {
+        Provider.of<Order>(context, listen: false).addTime(date);
+        print('confirm $date');
+      }, currentTime: time, locale: LocaleType.en);
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Container(
@@ -42,133 +61,180 @@ class _AddLocationState extends State<AddLocation> {
         ),
         child: Column(
           children: [
-            SizedBox(
-              // color: Colors.green,
-              height: 60 * locationList.length.toDouble(),
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: locationList.length,
-                itemBuilder: (context, index) {
-                  return Stack(
-                    children: [
-                      index == 0
-                          ? const Positioned(
-                              top: 24,
-                              left: 18,
-                              child: Icon(
-                                FontAwesomeIcons.circleDot,
-                                size: 15.0,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            )
-                          : index == locationList.length - 1
+            Stack(
+              children: [
+                SizedBox(
+                  // color: Colors.green,
+                  height: 60 * locationList.length.toDouble(),
+                  child: ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: locationList.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          index == 0
                               ? const Positioned(
                                   top: 24,
                                   left: 18,
                                   child: Icon(
-                                    FontAwesomeIcons.locationDot,
-                                    size: 18.0,
+                                    FontAwesomeIcons.circleDot,
+                                    size: 15.0,
                                     color: Color.fromARGB(255, 0, 0, 0),
                                   ),
                                 )
-                              : const Positioned(
-                                  top: 24,
-                                  left: 21,
-                                  child: Icon(
-                                    FontAwesomeIcons.circle,
-                                    size: 11.0,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                  ),
-                                ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => LocationSearchScreen(
-                                            index: index,
-                                          )));
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 50.0, right: 25),
-                              child: SizedBox(
-                                height: 60,
-                                // color: Colors.red[200],
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Row(
+                              : index == locationList.length - 1
+                                  ? const Positioned(
+                                      top: 24,
+                                      left: 18,
+                                      child: Icon(
+                                        FontAwesomeIcons.locationDot,
+                                        size: 18.0,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    )
+                                  : const Positioned(
+                                      top: 24,
+                                      left: 21,
+                                      child: Icon(
+                                        FontAwesomeIcons.circle,
+                                        size: 11.0,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => LocationSearchScreen(
+                                                index: index,
+                                              )));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 50.0, right: 0),
+                                  child: SizedBox(
+                                    height: 60,
+                                    // color: Colors.red[200],
+                                    child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Expanded(
-                                          child: Text(
-                                            locationList[index].description ==
-                                                    ''
-                                                ? locationList[index].name
-                                                : locationList[index]
-                                                    .description,
-                                            softWrap: false,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 18.0,
-                                                color: locationList[index]
-                                                            .description ==
-                                                        ''
-                                                    ? const Color.fromARGB(
-                                                        255, 160, 160, 160)
-                                                    : const Color.fromARGB(
-                                                        255, 0, 0, 0)),
-                                          ),
-                                        ),
-                                        index != 0 &&
-                                                index != locationList.length - 1
-                                            ? GestureDetector(
-                                                onTap: () {
-                                                  Provider.of<Order>(context,
-                                                          listen: false)
-                                                      .removeLocation(index);
-                                                },
-                                                child: Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  color: Colors.white,
-                                                  child: const Icon(
-                                                    FontAwesomeIcons.xmark,
-                                                    size: 20.0,
-                                                    color: Color.fromARGB(
-                                                        255, 138, 138, 138),
-                                                  ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Padding(
+                                              padding:  index==0?  const EdgeInsets.only(right:15.0):const EdgeInsets.only(right:0.0),
+                                                child: Text(
+                                                  locationList[index]
+                                                              .description ==
+                                                          ''
+                                                      ? locationList[index].name
+                                                      : locationList[index]
+                                                          .description,
+                                                  softWrap: false,
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 18.0,
+                                                      color: locationList[index]
+                                                                  .description ==
+                                                              ''
+                                                          ? const Color.fromARGB(
+                                                              255, 160, 160, 160)
+                                                          : const Color.fromARGB(
+                                                              255, 0, 0, 0)),
                                                 ),
-                                              )
-                                            : Container(),
+                                              ),
+                                            ),
+                                            index != 0 &&
+                                                    index !=
+                                                        locationList.length - 1
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      Provider.of<Order>(
+                                                              context,
+                                                              listen: false)
+                                                          .removeLocation(
+                                                              index);
+                                                    },
+                                                    child: Container(
+                                                      height: 50,
+                                                      width: 50,
+                                                      color: Colors.white,
+                                                      child: const Icon(
+                                                        FontAwesomeIcons.xmark,
+                                                        size: 20.0,
+                                                        color: Color.fromARGB(
+                                                            255, 138, 138, 138),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(),
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 50.0),
-                            child: Container(
-                              height: 0.5,
-                              width: MediaQuery.of(context).size.width,
-                              color: Colors.black,
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 50.0),
+                                child: Container(
+                                  height: 0.5,
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 9,
+                  right: 5,
+                  child: GestureDetector(
+                    onTap: () {
+                      whenScheduleUpDateTapped();
+                    },
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            const Icon(
+                              FontAwesomeIcons.solidClock,
+                              size: 13.0,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'Schedule',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15.0,
+                                  color: Colors.black),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Container(
               height: 0.5,

@@ -4,22 +4,25 @@ class UserAuth {
 }
 
 class UserInformation {
-  String displayName;
-  String email;
-  bool isAnonymous;
+  String userName;
   String phoneNumber;
-  String photoURL;
-  String uid;
-  List category;
+  String email;
+  String type;
+  String userUid;
+  String businessName;
+  bool proofOfDelivery;
+  String documentId;
 
-  UserInformation(
-      {required this.displayName,
-      required this.email,
-      required this.isAnonymous,
-      required this.phoneNumber,
-      required this.photoURL,
-      required this.uid,
-      required this.category});
+  UserInformation({
+    required this.userName,
+    required this.email,
+    required this.type,
+    required this.phoneNumber,
+    required this.userUid,
+    required this.businessName,
+    required this.proofOfDelivery,
+    required this.documentId,
+  });
 }
 
 class Vehicles {

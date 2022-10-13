@@ -13,18 +13,72 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Vehicles');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('Users');
+
+////////////////////User//////////////////////////////////////////////////
+////////////////////Write//////////////////////////////////////////////////
+  Future newUserData(
+    String userName,
+    String phoneNumber,
+    String email,
+    String password,
+    String type,
+    String userUid,
+    String businessName,
+  ) async {
+    userCollection
+        .where('userUid', isEqualTo: userUid)
+        .get()
+        .then((docs) async {
+      if (docs.docs.isEmpty) {
+        return await userCollection.doc(userUid).set({
+          'created': Timestamp.now(),
+          'name': userName,
+          'phoneNumber': phoneNumber,
+          'email': email,
+          'password': password,
+          'type': type,
+          'userUid': userUid,
+          'businessName': businessName,
+          'proofOfDelivery': false,
+        });
+      }
+    });
+  }
+
+////////////////////Write//////////////////////////////////////////////////
+////////////////////Edit//////////////////////////////////////////////////
+  Future updateProofOfDelivery(
+    bool proofOfDelivery,
+    String userUid,
+  ) async {
+    return await userCollection.doc(userUid).update({
+      'proofOfDelivery': !proofOfDelivery,
+    });
+  }
+
+  Future updateUsername(
+    String userName,
+    String userUid,
+  ) async {
+    return await userCollection.doc(userUid).update({
+      'name': userName,
+    });
+  }
+////////////////////Edit//////////////////////////////////////////////////
+////////////////////User//////////////////////////////////////////////////
 ////////////////////Read//////////////////////////////////////////////////
 
   List<UserInformation> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UserInformation(
-        displayName: (doc.data() as dynamic)['displayName'] ?? '',
+        userName: (doc.data() as dynamic)['name'] ?? '',
         email: (doc.data() as dynamic)['email'] ?? '',
-        isAnonymous: (doc.data() as dynamic)['isAnonymous'] ?? false,
+        type: (doc.data() as dynamic)['type'] ?? false,
         phoneNumber: (doc.data() as dynamic)['phoneNumber'] ?? '',
-        photoURL: (doc.data() as dynamic)['photoURL'] ?? '',
-        category: (doc.data() as dynamic)['Categories'] ?? ['All'],
-        uid: (doc.data() as dynamic)['uid'] ?? '',
+        userUid: (doc.data() as dynamic)['userUid'] ?? '',
+        businessName: (doc.data() as dynamic)['businessName'] ?? '',
+        proofOfDelivery: (doc.data() as dynamic)['proofOfDelivery'] ?? '',
+         documentId: doc.reference.id,
       );
     }).toList();
   }
@@ -32,7 +86,7 @@ class DatabaseService {
   //orders lounges stream
   Stream<List<UserInformation>> get userInfo {
     return userCollection
-        .where('uid', isEqualTo: userUid)
+        .where('userUid', isEqualTo: userUid)
         .snapshots()
         .map(_userInfoListFromSnapshot);
   }

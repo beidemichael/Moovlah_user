@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:moovlah_user/Models/OrderModel.dart';
 import 'package:moovlah_user/Shared/YellowButton.dart';
+import 'package:provider/provider.dart';
+import '../Models/models.dart';
 import '../Service/auth.dart';
 
 class Business extends StatefulWidget {
@@ -60,8 +63,8 @@ class _BusinessState extends State<Business> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
+                        contentPadding: const EdgeInsets.only(
+                            left: 20, top: 30, bottom: 10),
                         labelText: 'Business Name',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -71,7 +74,8 @@ class _BusinessState extends State<Business> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.grey.shade400)),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
@@ -102,8 +106,8 @@ class _BusinessState extends State<Business> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
+                        contentPadding: const EdgeInsets.only(
+                            left: 20, top: 30, bottom: 10),
                         labelText: 'First Name',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -113,7 +117,8 @@ class _BusinessState extends State<Business> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.grey.shade400)),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
@@ -145,8 +150,8 @@ class _BusinessState extends State<Business> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
+                        contentPadding: const EdgeInsets.only(
+                            left: 20, top: 30, bottom: 10),
                         labelText: 'Phone Number',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -156,7 +161,8 @@ class _BusinessState extends State<Business> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.grey.shade400)),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
@@ -188,8 +194,8 @@ class _BusinessState extends State<Business> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
                       decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
+                        contentPadding: const EdgeInsets.only(
+                            left: 20, top: 30, bottom: 10),
                         labelText: 'Work Email',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -199,7 +205,8 @@ class _BusinessState extends State<Business> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.grey.shade400)),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
@@ -229,7 +236,7 @@ class _BusinessState extends State<Business> {
                           color: Colors.grey[700],
                           fontSize: 20.0,
                           fontWeight: FontWeight.w500),
-                          obscureText: !_passwordVisible,
+                      obscureText: !_passwordVisible,
                       decoration: InputDecoration(
                         suffixIcon: IconButton(
                           icon: Icon(
@@ -246,8 +253,8 @@ class _BusinessState extends State<Business> {
                             });
                           },
                         ),
-                        contentPadding:
-                            const EdgeInsets.only(left: 20, top: 30, bottom: 10),
+                        contentPadding: const EdgeInsets.only(
+                            left: 20, top: 30, bottom: 10),
                         labelText: 'Password',
                         focusColor: Colors.orange[900],
                         labelStyle: TextStyle(
@@ -257,7 +264,8 @@ class _BusinessState extends State<Business> {
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
-                            borderSide: BorderSide(color: Colors.grey.shade400)),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400)),
                         focusedBorder: OutlineInputBorder(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(20.0)),
@@ -274,14 +282,18 @@ class _BusinessState extends State<Business> {
                         setState(() {
                           isLoading = true;
                         });
+
                         if (_formKey.currentState!.validate()) {
                           await AuthServices.signUpEmailAndPassword(
-                            context: context,
-                            emailAddress: email!,
-                            password: password!,
-                          );
+                              context: context,
+                              emailAddress: email!,
+                              password: password!,
+                              type: 'business',
+                              phoneNumber: phoneNumber!,
+                              userName: firstName!,
+                              businessName: businessName!);
                         }
-                        
+
                         setState(() {
                           isLoading = false;
                         });

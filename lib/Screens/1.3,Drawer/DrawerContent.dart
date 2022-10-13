@@ -3,7 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
+import '../../Models/models.dart';
+import '../../Service/Database.dart';
 import 'DrawerScreens/Drivers.dart';
 import 'DrawerScreens/Help.dart';
 import 'DrawerScreens/Orders.dart';
@@ -19,6 +22,7 @@ class DrawerContent extends StatefulWidget {
 class _DrawerContentState extends State<DrawerContent> {
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<List<UserInformation>>(context);
     return Container(
       width: MediaQuery.of(context).size.width * 0.75,
       height: MediaQuery.of(context).size.height * 0.85,
@@ -39,7 +43,7 @@ class _DrawerContentState extends State<DrawerContent> {
           Container(
               height: 150,
               width: 150,
-              child:  Icon(
+              child: Icon(
                 FontAwesomeIcons.userLarge,
                 shadows: [
                   BoxShadow(
@@ -66,10 +70,10 @@ class _DrawerContentState extends State<DrawerContent> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical:30.0),
-                  child: Text('Name',
-                      style: TextStyle(
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 30.0),
+                  child: Text(userInfo[0].userName,
+                      style: const TextStyle(
                           fontSize: 35.0,
                           color: Colors.black,
                           fontWeight: FontWeight.w600)),
@@ -187,8 +191,17 @@ class _DrawerContentState extends State<DrawerContent> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Setting()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                StreamProvider<List<UserInformation>>.value(
+                                    value: DatabaseService(
+                                            userUid: userInfo[0].userUid)
+                                        .userInfo,
+                                    initialData: const [],
+                                    child: Setting(
+                                    ))));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),

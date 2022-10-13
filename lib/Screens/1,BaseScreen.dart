@@ -33,6 +33,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<List<UserInformation>>(context);
     final vehicles = Provider.of<List<Vehicles>>(context);
     final vehicleName = Provider.of<Order>(context).vehicleNameDisplay;
     final vehicleAndLocationComplete =
@@ -152,9 +153,8 @@ class _BaseScreenState extends State<BaseScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => 
-                                        const AddMoreDetail()
-                                      ),
+                                          builder: (_) =>
+                                              const AddMoreDetail()),
                                     );
                                   },
                                   child: YellowButton(text: 'Next'))),
