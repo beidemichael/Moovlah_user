@@ -24,6 +24,7 @@ class _BaseScreenState extends State<BaseScreen> {
   ScrollController? scrollController;
   int checkedindex = 10000;
   var myChildSize = Size.zero;
+  // double totalDistance=0;
 
   @override
   void initState() {
@@ -38,6 +39,13 @@ class _BaseScreenState extends State<BaseScreen> {
     final vehicleName = Provider.of<Order>(context).vehicleNameDisplay;
     final vehicleAndLocationComplete =
         Provider.of<Order>(context).checkLocationInputIsAllFilled();
+    final totalDistanceInt = Provider.of<Order>(context).totalDistanceIntDisplay;
+    final totalDistancePrice = Provider.of<Order>(context).totalDistancePriceDisplay;
+    final totalSpecificationsPrice =
+        Provider.of<Order>(context).totalSpecificationsPriceDisplay;
+    final totalExtraServicesPrice =
+        Provider.of<Order>(context).totalExtraServicesPriceDisplay;
+    final totalPrice = Provider.of<Order>(context).totalPriceDisplay;
     return Scaffold(
       drawer: const DrawerContent(),
       appBar: AppBar(
@@ -71,7 +79,10 @@ class _BaseScreenState extends State<BaseScreen> {
                         //   checkedindex = index;
                         // });
                         Provider.of<Order>(context, listen: false).addVehicle(
-                            vehicles[index].type, vehicles[index].price);
+                          vehicles[index].type,
+                          vehicles[index].price.toDouble(),
+                          vehicles[index].pricePerKM.toDouble(),
+                        );
                       },
                       child: Stack(
                         children: [
@@ -157,7 +168,80 @@ class _BaseScreenState extends State<BaseScreen> {
                                               const AddMoreDetail()),
                                     );
                                   },
-                                  child: YellowButton(text: 'Next'))),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                              'Distance',
+                                              style: TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                          Text(
+                                              '${totalDistanceInt}KM',
+                                              style: const TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('ExtraService',
+                                              style: TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                          Text(
+                                              totalExtraServicesPrice.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                        ],
+                                      ),
+                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                              'Specifiacation',
+                                              style: TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                          Text(
+                                              totalSpecificationsPrice.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                        ],
+                                      ),
+                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Total',
+                                              style: TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                          Text(totalPrice.toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 21.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w600)),
+                                        ],
+                                      ),
+                                      YellowButton(text: 'Next'),
+                                    ],
+                                  ))),
                         ),
                       ),
                     ),

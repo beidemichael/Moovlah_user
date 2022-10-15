@@ -79,20 +79,21 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                   final lat = geometry.location.lat;
                   final lang = geometry.location.lng;
                   var newlatlang = LatLng(lat, lang);
+                  
 
                   //move map camera to selected place with animation
 
                   // if (mounted) {
                   //   setState(() {
-                      // mapController?.animateCamera(
-                      //     CameraUpdate.newCameraPosition(
-                      //         CameraPosition(target: newlatlang, zoom: 17)));
-                      coordinate = LatLng(lat, lang);
-                      // ignore: use_build_context_synchronously
-                      Provider.of<Order>(context, listen: false)
-                          .addLocationPosition(
-                              description, coordinate, widget.index);
-                    // });
+                  // mapController?.animateCamera(
+                  //     CameraUpdate.newCameraPosition(
+                  //         CameraPosition(target: newlatlang, zoom: 17)));
+                  coordinate = LatLng(lat, lang);
+                  // ignore: use_build_context_synchronously
+                  Provider.of<Order>(context, listen: false)
+                      .addLocationPosition(
+                          description, coordinate, widget.index);
+                  // });
                   // }
 
                 }

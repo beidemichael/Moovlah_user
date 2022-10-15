@@ -1,3 +1,5 @@
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class UserAuth {
   final String uid;
   UserAuth({required this.uid});
@@ -36,7 +38,8 @@ class Vehicles {
   List extraServicePrice;
   List specification;
   List specificationPrice;
-  double price = 0.0;
+  num price;
+  num pricePerKM;
 
   Vehicles({
     required this.documentId,
@@ -49,14 +52,15 @@ class Vehicles {
     required this.extraServicePrice,
     required this.specification,
     required this.specificationPrice,
-    // required this.price,
+    required this.price,
+    required this.pricePerKM,
   });
 }
 
 class LocationList {
   String name;
   // ignore: prefer_typing_uninitialized_variables
-  var location;
+  LatLng location;
   String description;
   String phoneNumber;
   String contactName;

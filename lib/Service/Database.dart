@@ -78,7 +78,7 @@ class DatabaseService {
         userUid: (doc.data() as dynamic)['userUid'] ?? '',
         businessName: (doc.data() as dynamic)['businessName'] ?? '',
         proofOfDelivery: (doc.data() as dynamic)['proofOfDelivery'] ?? '',
-         documentId: doc.reference.id,
+        documentId: doc.reference.id,
       );
     }).toList();
   }
@@ -104,7 +104,8 @@ class DatabaseService {
         extraServicePrice: (doc.data() as dynamic)['ExtraServicePrice'] ?? [],
         specification: (doc.data() as dynamic)['Specification'] ?? [],
         specificationPrice: (doc.data() as dynamic)['SpecificationPrice'] ?? [],
-        // price: (doc.data() as dynamic)['Price'] ?? 0.0,
+        price: (doc.data() as dynamic)['Price'] ?? 0.0,
+        pricePerKM: (doc.data() as dynamic)['PerKM'] ?? 0.0,
         documentId: doc.reference.id,
       );
     }).toList();
