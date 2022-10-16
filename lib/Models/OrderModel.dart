@@ -63,6 +63,8 @@ class Order extends ChangeNotifier {
   List locationListcontactName = [];
   List locationListfloorAndUnitNumber = [];
 
+  bool locationInput = false;
+
   /////////////////////////InBetween/////////////////////////////
   ///
   ///
@@ -120,6 +122,8 @@ class Order extends ChangeNotifier {
   double get totalSpecificationsPriceDisplay => totalSpecificationsPrice;
   double get totalExtraServicesPriceDisplay => totalExtraServicesPrice;
   double get totalPriceDisplay => totalPrice;
+
+  bool get locationInputDisplay => locationInput;
   //
   get moreDetailsImageDisplay => moreDetailsImage;
   bool get favouriteDriverFirstDisplay => favouriteDriverFirst;
@@ -174,6 +178,11 @@ class Order extends ChangeNotifier {
     locationList[indexFunction].contactName = contactNameFunction;
     locationList[indexFunction].phoneNumber = phoneNumberFunction;
     locationList[indexFunction].floorAndUnitNumber = floorAndUnitNumberFunction;
+    notifyListeners();
+  }
+
+  void locationInputLoading() {
+    locationInput = !locationInput;
     notifyListeners();
   }
 
@@ -391,10 +400,14 @@ class Order extends ChangeNotifier {
     cash = false;
     paidBy = '';
     newImage = '';
+    moreDetailsImage = null;
     notifyListeners();
   }
 
-  Future<void> publishOrder(BuildContext context, UserInformation userInfo ) async {
+  Future<void> publishOrder(
+      BuildContext context, UserInformation userInfo) async {
+    upLoading = true;
+    notifyListeners();
     for (int i = 0; i < locationList.length; i++) {
       locationListName.add(locationList[i].name);
       locationListlocationLat.add(locationList[i].location.latitude);
@@ -406,8 +419,6 @@ class Order extends ChangeNotifier {
     }
 
     if (moreDetailsImage != null) {
-      upLoading = true;
-
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref =
           storage.ref().child("DetailedImage" + DateTime.now().toString());
@@ -420,12 +431,43 @@ class Order extends ChangeNotifier {
       });
     }
 
+    DatabaseService().order(
+        vehicleName,
+        vehicelPrice,
+        extraServiceName,
+        extraServicePrice,
+        specificationName,
+        specificationPrice,
+        orderRemark,
+        time,
+        locationListName,
+        locationListlocationLat,
+        locationListlocationLong,
+        locationListdescription,
+        locationListphoneNumber,
+        locationListcontactName,
+        locationListfloorAndUnitNumber,
+        totalDistanceInt,
+        totalDistancePrice,
+        totalPrice,
+        favouriteDriverFirst,
+        cash,
+        paidBy,
+        newImage,
+        userInfo.userName,
+        userInfo.type,
+        userInfo.email,
+        userInfo.userUid);
     upLoading = false;
-
+    notifyListeners();
+    prepareVariablesForNewOrder();
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        duration: const Duration(milliseconds: 800),
+        behavior: SnackBarBehavior.floating,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        duration: const Duration(seconds: 2),
         elevation: 5,
-        backgroundColor: const Color(0xFFFFF600),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           // ignore: prefer_const_literals_to_create_immutables
@@ -433,42 +475,12 @@ class Order extends ChangeNotifier {
             const Text(
               'Order Published',
               style: TextStyle(
-                  color: Colors.black,
+                  color: Color.fromARGB(255, 255, 255, 255),
                   fontSize: 18.0,
                   fontWeight: FontWeight.w300),
             ),
           ],
         )));
-
-    DatabaseService().order(
-      vehicleName,
-      vehicelPrice,
-      extraServiceName,
-      extraServicePrice,
-      specificationName,
-      specificationPrice,
-      orderRemark,
-      time,
-      locationListName,
-      locationListlocationLat,
-      locationListlocationLong,
-      locationListdescription,
-      locationListphoneNumber,
-      locationListcontactName,
-      locationListfloorAndUnitNumber,
-      totalDistanceInt,
-      totalDistancePrice,
-      totalPrice,
-      favouriteDriverFirst,
-      cash,
-      paidBy,
-      newImage,
-      userInfo.userName,
-      userInfo.type,
-      userInfo.email,
-      userInfo.userUid
-    );
-    prepareVariablesForNewOrder();
     Navigator.of(context).pop();
     Navigator.of(context).pop();
   }

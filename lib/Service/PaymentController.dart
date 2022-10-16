@@ -1,16 +1,22 @@
-// ignore_for_file: file_names, avoid_print
+// ignore_for_file: file_names, avoid_print, use_build_context_synchronously
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import '../Models/OrderModel.dart';
+import '../Models/models.dart';
 
 class PaymentController extends GetxController {
   Map<String, dynamic>? paymentIntentData;
 
   Future<void> makePayment(
-      {required String amount, required String currency}) async {
+      {required String amount, required String currency,
+     required  BuildContext context,
+     required UserInformation userInfo}) async {
     try {
       paymentIntentData = await createPaymentIntent(amount, currency);
       if (paymentIntentData != null) {
@@ -58,14 +64,14 @@ class PaymentController extends GetxController {
             ),
           ),
         ));
-        displayPaymentSheet();
+        displayPaymentSheet(context, userInfo);
       }
     } catch (e, s) {
       print('exception:$e$s');
     }
   }
 
-  displayPaymentSheet() async {
+  displayPaymentSheet(BuildContext context, UserInformation userInfo) async {
     try {
       await Stripe.instance.presentPaymentSheet();
       // Get.snackbar('Payment', 'Payment Successful',
@@ -74,6 +80,8 @@ class PaymentController extends GetxController {
       //     colorText: Colors.white,
       //     margin: const EdgeInsets.all(10),
       //     duration: const Duration(seconds: 2));
+       Provider.of<Order>(context, listen: false)
+          .publishOrder(context, userInfo);
     } on Exception catch (e) {
       if (e is StripeException) {
         print("Error from Stripe: ${e.error.localizedMessage}");

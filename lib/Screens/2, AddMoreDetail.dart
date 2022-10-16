@@ -224,7 +224,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                             // height: 90,
                             width: 90,
                             // ignore: sort_child_properties_last
-                            child: moreDetailsImage != null
+                            child: moreDetailsImage != null || moreDetailsImage == File('/dev/null')
                                 ? SizedBox(
                                     height: 100,
                                     width: 100,

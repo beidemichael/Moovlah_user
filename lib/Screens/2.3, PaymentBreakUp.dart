@@ -15,7 +15,7 @@ import '../Service/Database.dart';
 
 class PaymentBreakUp extends StatefulWidget {
   UserInformation userInfo;
-   PaymentBreakUp({super.key, required this.userInfo});
+  PaymentBreakUp({super.key, required this.userInfo});
 
   @override
   State<PaymentBreakUp> createState() => _PaymentBreakUpState();
@@ -31,7 +31,6 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
     final locationList = Provider.of<Order>(context).locationList;
     final totalPrice = Provider.of<Order>(context).totalPriceDisplay;
     final upLoading = Provider.of<Order>(context).uploadingDisplay;
-    final userInfo = Provider.of<List<UserInformation>>(context);
 
     final PaymentController controller = Get.put(PaymentController());
     return Container(
@@ -78,11 +77,14 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                           Provider.of<Order>(context, listen: false)
                               .selectPaidBy('');
                           controller.makePayment(
-                              amount: totalPrice.toInt().toString(),
-                              currency: 'SGD');
-                          Future.delayed(const Duration(seconds: 5), () {
-                            Navigator.of(context).pop();
-                          });
+                            amount: totalPrice.toInt().toString(),
+                            currency: 'SGD',
+                            context: context,
+                            userInfo: widget.userInfo,
+                          );
+                          // Future.delayed(const Duration(seconds: 5), () {
+                          //   Navigator.of(context).pop();
+                          // });
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -425,10 +427,12 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
               ],
             ),
           ),
-          // ignore: prefer_const_constructors
           upLoading == true
-              ? const SpinKitCircle(
-                  color: Colors.black,
+              ? const Padding(
+                  padding: EdgeInsets.only(bottom: 32.0),
+                  child: SpinKitCircle(
+                    color: Colors.black,
+                  ),
                 )
               : paidBy != ''
                   ? Padding(

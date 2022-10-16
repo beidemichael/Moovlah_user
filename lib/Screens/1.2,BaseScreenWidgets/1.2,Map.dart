@@ -94,29 +94,31 @@ class _MapForLocationState extends State<MapForLocation> {
   Widget build(BuildContext context) {
     String locationListDescription =
         Provider.of<Order>(context).locationDescription(widget.index);
+        
+    final locationInput = Provider.of<Order>(context).locationInputDisplay;
     return 
-    // loading == true
-    //     ? const Center(
-    //         child: SpinKitCircle(
-    //         color: Colors.black,
-    //         size: 50.0,
-    //       ))
-    //     : 
+    loading == true
+        ? const Center(
+            child: SpinKitCircle(
+            color: Colors.black,
+            size: 50.0,
+          ))
+        : 
         Stack(
             children: [
-              // GoogleMap(
-              //   mapType: MapType.normal,
-              //   tiltGesturesEnabled: false,
-              //   initialCameraPosition: CameraPosition(
-              //     tilt: 0,
-              //     bearing: 0,
-              //     target: _initialPosition,
-              //     zoom: 17.00,
-              //   ),
-              //   onMapCreated: (GoogleMapController controller) {
-              //     widget.mapController.complete(controller);
-              //   },
-              // ),
+              GoogleMap(
+                mapType: MapType.normal,
+                tiltGesturesEnabled: false,
+                initialCameraPosition: CameraPosition(
+                  tilt: 0,
+                  bearing: 0,
+                  target: _initialPosition,
+                  zoom: 17.00,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  widget.mapController.complete(controller);
+                },
+              ),
               Positioned(
                 bottom: 0,
                 child: Container(
@@ -306,6 +308,11 @@ class _MapForLocationState extends State<MapForLocation> {
                             ),
                           ],
                         ),
+                        locationInput == true
+                            ? const SpinKitCircle(
+                              color: Colors.black,
+                            )
+                            : 
                         locationListDescription != ''
                                 ?GestureDetector(
                             onTap: () {
@@ -317,7 +324,7 @@ class _MapForLocationState extends State<MapForLocation> {
                               }
                             },
                             child:  YellowButton(text: 'Confirm')
-                                ):YellowButton(text: 'Waiting...'),
+                                ):Container(),
                       ],
                     ),
                   ),

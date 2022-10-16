@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, unused_local_variable, avoid_print
+// ignore_for_file: unused_import, prefer_typing_uninitialized_variables, unused_local_variable, avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
@@ -64,6 +64,8 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                     });
 
                 if (place != null) {
+                  Provider.of<Order>(context, listen: false)
+                      .locationInputLoading();
                   location = place.description.toString();
                   description = place.description.toString();
 
@@ -81,19 +83,16 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                   var newlatlang = LatLng(lat, lang);
                   //move map camera to selected place with animation
 
-                  // if (mounted) {
-                  //   setState(() {
-                  // mapController?.animateCamera(
-                  //     CameraUpdate.newCameraPosition(
-                  //         CameraPosition(target: newlatlang, zoom: 17)));
+                  final c = await mapController.future;
+                  final p = CameraPosition(target: newlatlang, zoom: 17);
+                  c.animateCamera(CameraUpdate.newCameraPosition(p));
                   coordinate = LatLng(lat, lang);
                   // ignore: use_build_context_synchronously
                   Provider.of<Order>(context, listen: false)
                       .addLocationPosition(
                           description, coordinate, widget.index);
-                  // });
-                  // }
-
+                  Provider.of<Order>(context, listen: false)
+                      .locationInputLoading();
                 }
               },
               child: Padding(
