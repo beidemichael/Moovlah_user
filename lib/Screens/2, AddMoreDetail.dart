@@ -9,11 +9,14 @@ import 'package:moovlah_user/Models/OrderModel.dart';
 import 'package:moovlah_user/Shared/YellowButton.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/models.dart';
+import '../Service/Database.dart';
 import '2.1, AddNotes.dart';
 import '2.3, PaymentBreakUp.dart';
 
 class AddMoreDetail extends StatefulWidget {
-  const AddMoreDetail({super.key});
+  UserInformation userInfo;
+  AddMoreDetail({super.key, required this.userInfo});
 
   @override
   State<AddMoreDetail> createState() => _AddMoreDetailState();
@@ -44,7 +47,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
             child: FractionallySizedBox(
               heightFactor: 0.6,
               child: Container(
-                child: const PaymentBreakUp(),
+                child:  PaymentBreakUp(userInfo:widget.userInfo),
               ),
             ),
           );

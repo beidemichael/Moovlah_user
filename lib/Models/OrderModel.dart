@@ -1,11 +1,15 @@
-// ignore_for_file: file_names, prefer_typing_uninitialized_variables
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
 import 'package:moovlah_user/Service/DistanceCalculator.dart';
+
+import '../Service/Database.dart';
 
 class Order extends ChangeNotifier {
 /*
@@ -51,6 +55,14 @@ class Order extends ChangeNotifier {
         contactName: '',
         floorAndUnitNumber: '')
   ];
+  List locationListName = [];
+  List locationListlocationLat = [];
+  List locationListlocationLong = [];
+  List locationListdescription = [];
+  List locationListphoneNumber = [];
+  List locationListcontactName = [];
+  List locationListfloorAndUnitNumber = [];
+
   /////////////////////////InBetween/////////////////////////////
   ///
   ///
@@ -78,8 +90,17 @@ class Order extends ChangeNotifier {
   /////////////////////////FinalOrderScreen/////////////////////////////
   bool favouriteDriverFirst = false;
   bool cash = false;
+  String paidBy = '';
   var moreDetailsImage;
   /////////////////////////FinalOrderScreen/////////////////////////////
+  ///
+  ///
+  /////////////////////////OrderPublishing/////////////////////////////
+  String newImage = '';
+  bool upLoading = false;
+  /////////////////////////OrderPublishing/////////////////////////////
+  ///
+  ///
 ///////////2
   /////////////////////////////////////////////////////////////////////////
   String get screenDisplay => screen;
@@ -103,6 +124,10 @@ class Order extends ChangeNotifier {
   get moreDetailsImageDisplay => moreDetailsImage;
   bool get favouriteDriverFirstDisplay => favouriteDriverFirst;
   bool get cashDisplay => cash;
+  String get paidByDisplay => paidBy;
+  String get orderRemarkDisplay => orderRemark;
+  //
+  bool get uploadingDisplay => upLoading;
 
   /////////////////////////////////////////////////////////////////////////
 //////////3
@@ -270,7 +295,8 @@ class Order extends ChangeNotifier {
       totalSpecificationsPrice =
           totalSpecificationsPrice + specificationPrice[i];
     }
-    totalDistancePrice = vehicelPricePerKM * totalDistanceInt;
+    totalDistancePrice =
+        (vehicelPricePerKM * totalDistanceInt).toInt().toDouble();
     totalPrice = vehicelPrice +
         totalExtraServicesPrice +
         totalSpecificationsPrice +
@@ -315,5 +341,135 @@ class Order extends ChangeNotifier {
   void selectCash() {
     cash = !cash;
     notifyListeners();
+  }
+
+  void selectPaidBy(String paidByFunction) {
+    paidBy = paidByFunction;
+    notifyListeners();
+  }
+
+  void prepareVariablesForNewOrder() {
+    resetVariables();
+    vehicleSelected = false;
+    locationList.clear();
+    locationList = [
+      LocationList(
+          name: 'Pick-up location',
+          location: const LatLng(0.0, 0.0),
+          description: '',
+          phoneNumber: '',
+          contactName: '',
+          floorAndUnitNumber: ''),
+      LocationList(
+          name: 'Drop-off location',
+          location: const LatLng(0.0, 0.0),
+          description: '',
+          phoneNumber: '',
+          contactName: '',
+          floorAndUnitNumber: '')
+    ];
+    locationListName.clear();
+    locationListlocationLat.clear();
+    locationListlocationLong.clear();
+    locationListdescription.clear();
+    locationListphoneNumber.clear();
+    locationListcontactName.clear();
+    locationListfloorAndUnitNumber.clear();
+    vehicleName = '';
+    vehicelPrice = 0.0;
+    vehicelPricePerKM = 0.0;
+    extraServiceName.clear();
+    extraServicePrice.clear();
+    specificationName.clear();
+    specificationPrice.clear();
+    orderRemark = '';
+    time = DateTime.now();
+    totalDistanceInt = 0;
+    totalDistancePrice = 0.0;
+    totalPrice = 0.0;
+    favouriteDriverFirst = false;
+    cash = false;
+    paidBy = '';
+    newImage = '';
+    notifyListeners();
+  }
+
+  Future<void> publishOrder(BuildContext context, UserInformation userInfo ) async {
+    for (int i = 0; i < locationList.length; i++) {
+      locationListName.add(locationList[i].name);
+      locationListlocationLat.add(locationList[i].location.latitude);
+      locationListlocationLong.add(locationList[i].location.longitude);
+      locationListdescription.add(locationList[i].description);
+      locationListphoneNumber.add(locationList[i].phoneNumber);
+      locationListcontactName.add(locationList[i].contactName);
+      locationListfloorAndUnitNumber.add(locationList[i].floorAndUnitNumber);
+    }
+
+    if (moreDetailsImage != null) {
+      upLoading = true;
+
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref =
+          storage.ref().child("DetailedImage" + DateTime.now().toString());
+      UploadTask uploadTask = ref.putFile(moreDetailsImage!);
+
+      await uploadTask.then((res) async {
+        final String downloadUrl = await res.ref.getDownloadURL();
+
+        newImage = downloadUrl;
+      });
+    }
+
+    upLoading = false;
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        duration: const Duration(milliseconds: 800),
+        elevation: 5,
+        backgroundColor: const Color(0xFFFFF600),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          // ignore: prefer_const_literals_to_create_immutables
+          children: [
+            const Text(
+              'Order Published',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w300),
+            ),
+          ],
+        )));
+
+    DatabaseService().order(
+      vehicleName,
+      vehicelPrice,
+      extraServiceName,
+      extraServicePrice,
+      specificationName,
+      specificationPrice,
+      orderRemark,
+      time,
+      locationListName,
+      locationListlocationLat,
+      locationListlocationLong,
+      locationListdescription,
+      locationListphoneNumber,
+      locationListcontactName,
+      locationListfloorAndUnitNumber,
+      totalDistanceInt,
+      totalDistancePrice,
+      totalPrice,
+      favouriteDriverFirst,
+      cash,
+      paidBy,
+      newImage,
+      userInfo.userName,
+      userInfo.type,
+      userInfo.email,
+      userInfo.userUid
+    );
+    prepareVariablesForNewOrder();
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 }

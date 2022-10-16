@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,9 +10,12 @@ import 'package:moovlah_user/Shared/YellowButton.dart';
 import 'package:provider/provider.dart';
 
 import '../Models/OrderModel.dart';
+import '../Models/models.dart';
+import '../Service/Database.dart';
 
 class PaymentBreakUp extends StatefulWidget {
-  const PaymentBreakUp({super.key});
+  UserInformation userInfo;
+   PaymentBreakUp({super.key, required this.userInfo});
 
   @override
   State<PaymentBreakUp> createState() => _PaymentBreakUpState();
@@ -23,7 +27,12 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
   @override
   Widget build(BuildContext context) {
     final cash = Provider.of<Order>(context).cashDisplay;
+    final paidBy = Provider.of<Order>(context).paidByDisplay;
     final locationList = Provider.of<Order>(context).locationList;
+    final totalPrice = Provider.of<Order>(context).totalPriceDisplay;
+    final upLoading = Provider.of<Order>(context).uploadingDisplay;
+    final userInfo = Provider.of<List<UserInformation>>(context);
+
     final PaymentController controller = Get.put(PaymentController());
     return Container(
       decoration: const BoxDecoration(
@@ -66,8 +75,14 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                             Provider.of<Order>(context, listen: false)
                                 .selectCash();
                           }
-
-                          controller.makePayment(amount: '5', currency: 'USD');
+                          Provider.of<Order>(context, listen: false)
+                              .selectPaidBy('');
+                          controller.makePayment(
+                              amount: totalPrice.toInt().toString(),
+                              currency: 'SGD');
+                          Future.delayed(const Duration(seconds: 5), () {
+                            Navigator.of(context).pop();
+                          });
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -231,13 +246,15 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      // Provider.of<Order>(context, listen: false)
-                                      //     .selectFavouriteDriverFirst();
+                                      Provider.of<Order>(context, listen: false)
+                                          .selectPaidBy('Sender');
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: paidBy == 'Sender'
+                                            ? Colors.yellow.shade200
+                                            : Colors.white,
                                         border: Border.all(
                                             width: 1.5,
                                             color: const Color.fromARGB(
@@ -316,13 +333,15 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      // Provider.of<Order>(context, listen: false)
-                                      //     .selectFavouriteDriverFirst();
+                                      Provider.of<Order>(context, listen: false)
+                                          .selectPaidBy('Recipient');
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: paidBy == 'Recipient'
+                                            ? Colors.yellow.shade200
+                                            : Colors.white,
                                         border: Border.all(
                                             width: 1.5,
                                             color: const Color.fromARGB(
@@ -406,18 +425,23 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32.0),
-            child: GestureDetector(
-              onTap: () {
-                //  Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (_) => CardPaymentScreen()));
-              },
-              child: YellowButton(text: 'Place Order'),
-            ),
-          ),
+          // ignore: prefer_const_constructors
+          upLoading == true
+              ? const SpinKitCircle(
+                  color: Colors.black,
+                )
+              : paidBy != ''
+                  ? Padding(
+                      padding: const EdgeInsets.only(bottom: 32.0),
+                      child: GestureDetector(
+                        onTap: () async {
+                          Provider.of<Order>(context, listen: false)
+                              .publishOrder(context, widget.userInfo);
+                        },
+                        child: YellowButton(text: 'Place Order'),
+                      ),
+                    )
+                  : Container(),
         ],
       ),
     );

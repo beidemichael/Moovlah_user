@@ -1,4 +1,4 @@
-// ignore_for_file: unrelated_type_equality_checks, file_names, unused_import
+// ignore_for_file: unrelated_type_equality_checks, file_names, unused_import, prefer_adjacent_string_concatenation, unused_local_variable
 
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -164,12 +164,14 @@ class _BaseScreenState extends State<BaseScreen> {
                           child: Center(
                               child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) =>
-                                              const AddMoreDetail()),
-                                    );
+                                    if (totalDistanceInt != 0) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                 AddMoreDetail(userInfo:userInfo[0])),
+                                      );
+                                    }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -177,16 +179,13 @@ class _BaseScreenState extends State<BaseScreen> {
                                     child: Column(
                                       children: [
                                         totalDistanceInt == 0
-                                            ? Container(
-                                                child: const Text(
-                                                    'Calculating...',
-                                                    style: TextStyle(
-                                                        fontSize: 21.0,
-                                                        color: Color.fromARGB(
-                                                            255, 121, 121, 121),
-                                                        fontWeight:
-                                                            FontWeight.w500)),
-                                              )
+                                            ? const Text('Calculating...',
+                                                style: TextStyle(
+                                                    fontSize: 21.0,
+                                                    color: Color.fromARGB(
+                                                        255, 121, 121, 121),
+                                                    fontWeight:
+                                                        FontWeight.w500))
                                             : Column(
                                                 children: [
                                                   Row(
@@ -260,6 +259,7 @@ class _BaseScreenState extends State<BaseScreen> {
                                                                   FontWeight
                                                                       .w300)),
                                                       Text(
+                                                          // ignore: prefer_interpolation_to_compose_strings
                                                           'S\$' +
                                                               totalDistancePrice
                                                                   .toString(),
@@ -294,21 +294,21 @@ class _BaseScreenState extends State<BaseScreen> {
                                                                   FontWeight
                                                                       .w300)),
                                                       Text(
-                                                          totalExtraServicesPrice
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize:
-                                                                      18.0,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          100,
-                                                                          100,
-                                                                          100),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300)),
+                                                          // ignore: prefer_interpolation_to_compose_strings
+                                                          'S\$' +
+                                                              totalExtraServicesPrice
+                                                                  .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
                                                     ],
                                                   ),
                                                   Row(
@@ -330,21 +330,21 @@ class _BaseScreenState extends State<BaseScreen> {
                                                                   FontWeight
                                                                       .w300)),
                                                       Text(
-                                                          totalSpecificationsPrice
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize:
-                                                                      18.0,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          100,
-                                                                          100,
-                                                                          100),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w300)),
+                                                          // ignore: prefer_interpolation_to_compose_strings
+                                                          'S\$' +
+                                                              totalSpecificationsPrice
+                                                                  .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
                                                     ],
                                                   ),
                                                   const Divider(),
@@ -362,6 +362,7 @@ class _BaseScreenState extends State<BaseScreen> {
                                                                   FontWeight
                                                                       .w600)),
                                                       Text(
+                                                          // ignore: prefer_interpolation_to_compose_strings
                                                           'S\$' +
                                                               totalPrice
                                                                   .toString(),

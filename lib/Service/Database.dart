@@ -13,9 +13,11 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Vehicles');
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('Users');
+  final CollectionReference orderCollection =
+      FirebaseFirestore.instance.collection('Orders');
 
-////////////////////User//////////////////////////////////////////////////
-////////////////////Write//////////////////////////////////////////////////
+//1//////////////////User//////////////////////////////////////////////////
+//1.1//////////////////Write//////////////////////////////////////////////////
   Future newUserData(
     String userName,
     String phoneNumber,
@@ -45,8 +47,8 @@ class DatabaseService {
     });
   }
 
-////////////////////Write//////////////////////////////////////////////////
-////////////////////Edit//////////////////////////////////////////////////
+//1.1//////////////////Write//////////////////////////////////////////////////
+//1.2//////////////////Edit//////////////////////////////////////////////////
   Future updateProofOfDelivery(
     bool proofOfDelivery,
     String userUid,
@@ -64,9 +66,8 @@ class DatabaseService {
       'name': userName,
     });
   }
-////////////////////Edit//////////////////////////////////////////////////
-////////////////////User//////////////////////////////////////////////////
-////////////////////Read//////////////////////////////////////////////////
+//1.2//////////////////Edit//////////////////////////////////////////////////
+//1.3//////////////////Read//////////////////////////////////////////////////
 
   List<UserInformation> _userInfoListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -91,6 +92,10 @@ class DatabaseService {
         .map(_userInfoListFromSnapshot);
   }
 
+//1.3//////////////////Read//////////////////////////////////////////////////
+//1///////////////////User//////////////////////////////////////////////////
+//2///////////////////Vehicle//////////////////////////////////////////////////
+//2.1//////////////////Read//////////////////////////////////////////////////
 //Read vehicle list.
   List<Vehicles> _vehiclesListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -119,5 +124,73 @@ class DatabaseService {
       print(onError.toString());
     }).map(_vehiclesListFromSnapshot);
   }
-////////////////////Read//////////////////////////////////////////////////
+
+//2.1//////////////////Read//////////////////////////////////////////////////
+//2///////////////////Vehicle//////////////////////////////////////////////////
+//3///////////////////Order//////////////////////////////////////////////////
+//3.1//////////////////Read//////////////////////////////////////////////////
+//3.1//////////////////Read//////////////////////////////////////////////////
+//3.2//////////////////Write//////////////////////////////////////////////////
+  Future order(
+    String vehicleName,
+    double vehicelPrice,
+    List extraServiceName,
+    List extraServicePrice,
+    List specificationName,
+    List specificationPrice,
+    String orderRemark,
+    DateTime time,
+    List locationListName,
+    List locationListlocationLat,
+    List locationListlocationLong,
+    List locationListdescription,
+    List locationListphoneNumber,
+    List locationListcontactName,
+    List locationListfloorAndUnitNumber,
+    int totalDistanceInt,
+    double totalDistancePrice,
+    double totalPrice,
+    bool favouriteDriverFirst,
+    bool cash,
+    String paidBy,
+    var moreDetailsImage,
+    String userName,
+    String type,
+    String email,
+    String userUid,
+  ) async {
+    orderCollection
+        .add({
+          'vehicleName': vehicleName,
+          'vehicelPrice': vehicelPrice,
+          'extraServiceName': extraServiceName,
+          'extraServicePrice': extraServicePrice,
+          'specificationName': specificationName,
+          'specificationPrice': specificationPrice,
+          'orderRemark': orderRemark,
+          'time': time,
+          'locationListName': locationListName,
+          'locationListlocationLat': locationListlocationLat,
+          'locationListlocationlong': locationListlocationLong,
+          'locationListdescription': locationListdescription,
+          'locationListphoneNumber': locationListphoneNumber,
+          'locationListcontactName': locationListcontactName,
+          'locationListfloorAndUnitNumber': locationListfloorAndUnitNumber,
+          'totalDistanceInt': totalDistanceInt,
+          'totalDistancePrice': totalDistancePrice,
+          'totalPrice': totalPrice,
+          'favouriteDriverFirst': favouriteDriverFirst,
+          'cash': cash,
+          'paidBy': paidBy,
+          'moreDetailsImage': moreDetailsImage,
+          'userName': userName,
+          'type': type,
+          'email': email,
+          'userUid': userUid,
+        })
+        .then((value) => print("Order Added"))
+        .catchError((error) => print("Failed to publish Order: $error"));
+  }
+//3.2//////////////////Write//////////////////////////////////////////////////
+//3///////////////////Order//////////////////////////////////////////////////
 }

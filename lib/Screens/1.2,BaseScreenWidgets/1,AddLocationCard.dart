@@ -34,7 +34,7 @@ class _AddLocationState extends State<AddLocation> {
       }, onConfirm: (date) {
         Provider.of<Order>(context, listen: false).addTime(date);
         print('confirm $date');
-      }, currentTime: time, locale: LocaleType.en);
+      }, currentTime: DateTime.now(), locale: LocaleType.en);
     }
 
     return Padding(

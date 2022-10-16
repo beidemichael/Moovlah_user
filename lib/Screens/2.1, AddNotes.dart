@@ -16,6 +16,7 @@ class _AddNotesState extends State<AddNotes> {
   String description = '';
   @override
   Widget build(BuildContext context) {
+    final orderRemarkDisplay = Provider.of<Order>(context).orderRemarkDisplay;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -58,6 +59,7 @@ class _AddNotesState extends State<AddNotes> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
                 child: TextFormField(
+                  initialValue: orderRemarkDisplay,
                   validator: (val) =>
                       val!.length != 6 ? 'Code should be 6 digits long' : null,
                   textAlign: TextAlign.left,
@@ -84,7 +86,7 @@ class _AddNotesState extends State<AddNotes> {
                         color: Colors.grey[500],
                         fontSize: 18.0,
                         fontWeight: FontWeight.w400),
-                    focusColor: Colors.purple[900],
+                    focusColor: Color.fromARGB(255, 219, 205, 0),
                     enabledBorder: OutlineInputBorder(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10.0)),
