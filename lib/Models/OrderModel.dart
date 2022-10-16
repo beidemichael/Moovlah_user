@@ -24,14 +24,15 @@ class Order extends ChangeNotifier {
   double vehicelPrice = 0;
   double vehicelPricePerKM = 0.0;
   List extraServiceName = [];
-  List extraServicePrice = [];
+  List<double> extraServicePrice = [];
   List specificationName = [];
-  List specificationPrice = [];
+  List<double> specificationPrice = [];
   bool vehicleSelected = false;
   /////////////////////////Vehicle/////////////////////////////
   ///
+  /***********************************************************/
   ///
-  /////////////////////////InBetween/////////////////////////////
+  /////////////////////////InBetween///////////////////////////
   String orderRemark = '';
   DateTime time = DateTime.now();
   List<LocationList> locationList = [
@@ -86,12 +87,14 @@ class Order extends ChangeNotifier {
   List get locationListDisplay => locationList;
   DateTime get timeDisplay => time;
   //
-  bool get priceCalculatingDisplay => priceCalculating;
+
   String get vehicleNameDisplay => vehicleName;
   List get vehicleServiceDisplay => extraServiceName;
   List get vehicleSpecificationDisplay => specificationName;
   //
+  bool get priceCalculatingDisplay => priceCalculating;
   int get totalDistanceIntDisplay => totalDistanceInt;
+  double get vehicelePriceDisplay => vehicelPrice;
   double get totalDistancePriceDisplay => totalDistancePrice;
   double get totalSpecificationsPriceDisplay => totalSpecificationsPrice;
   double get totalExtraServicesPriceDisplay => totalExtraServicesPrice;
@@ -168,6 +171,8 @@ class Order extends ChangeNotifier {
 
   void addVehicle(String vehicleNameFunction, double vehiclePriceFunction,
       double vehicelPricePerKMFunction) {
+    resetVariables();
+    calculateTotalPrice();
     if (vehicleName == vehicleNameFunction) {
       vehicleName = '';
       vehicelPrice = 0.0;
@@ -180,6 +185,7 @@ class Order extends ChangeNotifier {
       vehicleName = vehicleNameFunction;
       vehicelPrice = vehiclePriceFunction;
       vehicelPricePerKM = vehicelPricePerKMFunction;
+
       extraServiceName.clear();
       extraServicePrice.clear();
       specificationName.clear();
@@ -237,7 +243,6 @@ class Order extends ChangeNotifier {
     if (vehicleSelected == true && locationListComplete == true) {
       vehicleAndLocationComplete = true;
 
-      
       calculateTotalPrice();
     } else {
       vehicleAndLocationComplete = false;
@@ -258,6 +263,18 @@ class Order extends ChangeNotifier {
           ).createPolylines();
     }
     totalDistanceInt = totalDistance.round();
+    for (int i = 0; i < extraServicePrice.length; i++) {
+      totalExtraServicesPrice = totalExtraServicesPrice + extraServicePrice[i];
+    }
+    for (int i = 0; i < specificationPrice.length; i++) {
+      totalSpecificationsPrice =
+          totalSpecificationsPrice + specificationPrice[i];
+    }
+    totalDistancePrice = vehicelPricePerKM * totalDistanceInt;
+    totalPrice = vehicelPrice +
+        totalExtraServicesPrice +
+        totalSpecificationsPrice +
+        totalDistancePrice;
     notifyListeners();
   }
 
@@ -265,19 +282,6 @@ class Order extends ChangeNotifier {
     if (finishedRouting == false) {
       priceCalculating = true;
       calculateTotalDistanceFunction();
-      for (int i = 0; i < extraServicePrice.length - 1; i++) {
-        totalExtraServicesPrice =
-            totalExtraServicesPrice + extraServicePrice[i];
-      }
-      for (int i = 0; i < specificationPrice.length - 1; i++) {
-        totalSpecificationsPrice =
-            totalSpecificationsPrice + specificationPrice[i];
-      }
-      totalDistancePrice = vehicelPricePerKM * totalDistanceInt;
-      totalPrice = vehicelPrice +
-          totalExtraServicesPrice +
-          totalExtraServicesPrice +
-          totalDistancePrice;
       priceCalculating = false;
       finishedRouting = true;
     }

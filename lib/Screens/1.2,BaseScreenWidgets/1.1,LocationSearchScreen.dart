@@ -79,8 +79,6 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                   final lat = geometry.location.lat;
                   final lang = geometry.location.lng;
                   var newlatlang = LatLng(lat, lang);
-                  
-
                   //move map camera to selected place with animation
 
                   // if (mounted) {

@@ -39,8 +39,11 @@ class _BaseScreenState extends State<BaseScreen> {
     final vehicleName = Provider.of<Order>(context).vehicleNameDisplay;
     final vehicleAndLocationComplete =
         Provider.of<Order>(context).checkLocationInputIsAllFilled();
-    final totalDistanceInt = Provider.of<Order>(context).totalDistanceIntDisplay;
-    final totalDistancePrice = Provider.of<Order>(context).totalDistancePriceDisplay;
+    final vehicelPrice = Provider.of<Order>(context).vehicelePriceDisplay;
+    final totalDistanceInt =
+        Provider.of<Order>(context).totalDistanceIntDisplay;
+    final totalDistancePrice =
+        Provider.of<Order>(context).totalDistancePriceDisplay;
     final totalSpecificationsPrice =
         Provider.of<Order>(context).totalSpecificationsPriceDisplay;
     final totalExtraServicesPrice =
@@ -157,7 +160,7 @@ class _BaseScreenState extends State<BaseScreen> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 60.0, bottom: 40),
+                          padding: const EdgeInsets.only(top: 30.0, bottom: 40),
                           child: Center(
                               child: GestureDetector(
                                   onTap: () {
@@ -168,79 +171,217 @@ class _BaseScreenState extends State<BaseScreen> {
                                               const AddMoreDetail()),
                                     );
                                   },
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                              'Distance',
-                                              style: TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                          Text(
-                                              '${totalDistanceInt}KM',
-                                              style: const TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text('ExtraService',
-                                              style: TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                          Text(
-                                              totalExtraServicesPrice.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                        ],
-                                      ),
-                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                              'Specifiacation',
-                                              style: TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                          Text(
-                                              totalSpecificationsPrice.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                        ],
-                                      ),
-                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text('Total',
-                                              style: TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                          Text(totalPrice.toString(),
-                                              style: const TextStyle(
-                                                  fontSize: 21.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w600)),
-                                        ],
-                                      ),
-                                      YellowButton(text: 'Next'),
-                                    ],
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 30),
+                                    child: Column(
+                                      children: [
+                                        totalDistanceInt == 0
+                                            ? Container(
+                                                child: const Text(
+                                                    'Calculating...',
+                                                    style: TextStyle(
+                                                        fontSize: 21.0,
+                                                        color: Color.fromARGB(
+                                                            255, 121, 121, 121),
+                                                        fontWeight:
+                                                            FontWeight.w500)),
+                                              )
+                                            : Column(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    // ignore: prefer_const_literals_to_create_immutables
+                                                    children: [
+                                                      const Text(
+                                                          'Price Details',
+                                                          style: TextStyle(
+                                                              fontSize: 21.0,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500)),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text('Base Price',
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                      Text(
+                                                          'S\$' +
+                                                              '${vehicelPrice}KM',
+                                                          style: const TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                          'Overmileage ($totalDistanceInt km)',
+                                                          style: const TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                      Text(
+                                                          'S\$' +
+                                                              totalDistancePrice
+                                                                  .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text('ExtraService',
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                      Text(
+                                                          totalExtraServicesPrice
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      18.0,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300)),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text(
+                                                          'Specifiacation',
+                                                          style: TextStyle(
+                                                              fontSize: 18.0,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      100,
+                                                                      100,
+                                                                      100),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300)),
+                                                      Text(
+                                                          totalSpecificationsPrice
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      18.0,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300)),
+                                                    ],
+                                                  ),
+                                                  const Divider(),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      const Text('Total',
+                                                          style: TextStyle(
+                                                              fontSize: 21.0,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600)),
+                                                      Text(
+                                                          'S\$' +
+                                                              totalPrice
+                                                                  .toString(),
+                                                          style: const TextStyle(
+                                                              fontSize: 21.0,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600)),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        YellowButton(text: 'Next'),
+                                      ],
+                                    ),
                                   ))),
                         ),
                       ),
