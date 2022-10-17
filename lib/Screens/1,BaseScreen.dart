@@ -1,6 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks, file_names, unused_import, prefer_adjacent_string_concatenation, unused_local_variable
 
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:moovlah_user/Models/models.dart';
@@ -52,6 +53,10 @@ class _BaseScreenState extends State<BaseScreen> {
     return Scaffold(
       drawer: const DrawerContent(),
       appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            // systemNavigationBarColor: Colors.blue, // Navigation bar
+            statusBarColor: Color(0xFFFFF600), // Status bar
+          ),
           centerTitle: true,
           backgroundColor: Colors.grey[50],
           elevation: 0,
@@ -168,8 +173,8 @@ class _BaseScreenState extends State<BaseScreen> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (_) =>
-                                                 AddMoreDetail(userInfo:userInfo[0])),
+                                            builder: (_) => AddMoreDetail(
+                                                userInfo: userInfo[0])),
                                       );
                                     }
                                   },

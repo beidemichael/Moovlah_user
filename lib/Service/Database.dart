@@ -129,6 +129,63 @@ class DatabaseService {
 //2///////////////////Vehicle//////////////////////////////////////////////////
 //3///////////////////Order//////////////////////////////////////////////////
 //3.1//////////////////Read//////////////////////////////////////////////////
+  List<OrdersModel> _ordersListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return OrdersModel(
+        vehicleName: (doc.data() as dynamic)['vehicleName'] ?? '',
+        vehicelPrice: (doc.data() as dynamic)['vehicelPrice'] ?? 0.0,
+        extraServiceName: (doc.data() as dynamic)['extraServiceName'] ?? [],
+        extraServicePrice: (doc.data() as dynamic)['extraServicePrice'] ?? [],
+        specificationName: (doc.data() as dynamic)['specificationName'] ?? [],
+        specificationPrice: (doc.data() as dynamic)['specificationPrice'] ?? [],
+        orderRemark: (doc.data() as dynamic)['orderRemark'] ?? '',
+        time: (doc.data() as dynamic)['time'] ?? Timestamp.now(),
+        ordersModelLocationSub: OrdersModelLocationSub(
+          locationListName: (doc.data() as dynamic)['locationListName'] ?? [],
+          locationListcontactName:
+              (doc.data() as dynamic)['locationListcontactName'] ?? [],
+          locationListdescription:
+              (doc.data() as dynamic)['locationListdescription'] ?? [],
+          locationListfloorAndUnitNumber:
+              (doc.data() as dynamic)['locationListfloorAndUnitNumber'] ?? [],
+          locationListlocationLat:
+              (doc.data() as dynamic)['locationListlocationLat'] ?? [],
+          locationListlocationLong:
+              (doc.data() as dynamic)['locationListlocationLong'] ?? [],
+          locationListphoneNumber:
+              (doc.data() as dynamic)['locationListphoneNumber'] ?? [],
+        ),
+        totalDistanceInt: (doc.data() as dynamic)['totalDistanceInt'] ?? 0,
+        totalDistancePrice:
+            (doc.data() as dynamic)['totalDistancePrice'] ?? 0.0,
+        totalPrice: (doc.data() as dynamic)['totalPrice'] ?? 0.0,
+        favouriteDriverFirst:
+            (doc.data() as dynamic)['favouriteDriverFirst'] ?? false,
+        isCanceled: (doc.data() as dynamic)['isCanceled'] ?? false,
+        isDelivered: (doc.data() as dynamic)['isDelivered'] ?? false,
+        isTaken: (doc.data() as dynamic)['isTaken'] ?? false,
+        cash: (doc.data() as dynamic)['cash'] ?? false,
+        paidBy: (doc.data() as dynamic)['paidBy'] ?? '',
+        moreDetailsImage: (doc.data() as dynamic)['moreDetailsImage'] ?? '',
+        userName: (doc.data() as dynamic)['userName'] ?? '',
+        type: (doc.data() as dynamic)['type'] ?? '',
+        email: (doc.data() as dynamic)['email'] ?? '',
+        userUid: (doc.data() as dynamic)['userUid'] ?? '',
+        documentId: doc.reference.id,
+      );
+    }).toList();
+  }
+
+  Stream<List<OrdersModel>> get orders {
+    return orderCollection
+        .where('userUid', isEqualTo: userUid)
+        .orderBy('time', descending: true)
+        .snapshots()
+        .handleError((onError) {
+      print('errore in orders read: $onError');
+    }).map(_ordersListFromSnapshot);
+  }
+
 //3.1//////////////////Read//////////////////////////////////////////////////
 //3.2//////////////////Write//////////////////////////////////////////////////
   Future order(
@@ -187,6 +244,9 @@ class DatabaseService {
           'type': type,
           'email': email,
           'userUid': userUid,
+          'isTaken': false,
+          'isDelivered': false,
+          'isCanceled': false,
         })
         .then((value) => print("Order Added"))
         .catchError((error) => print("Failed to publish Order: $error"));

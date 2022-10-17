@@ -80,8 +80,15 @@ class _DrawerContentState extends State<DrawerContent> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const Orders()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) =>
+                                StreamProvider<List<OrdersModel>>.value(
+                                    value: DatabaseService(userUid: userInfo[0].userUid).orders,
+                                    catchError: (_, __) => [],
+                                    initialData: [],
+                                    child: const Orders())));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -200,8 +207,7 @@ class _DrawerContentState extends State<DrawerContent> {
                                             userUid: userInfo[0].userUid)
                                         .userInfo,
                                     initialData: const [],
-                                    child: Setting(
-                                    ))));
+                                    child: Setting())));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UserAuth {
@@ -72,4 +73,76 @@ class LocationList {
       required this.contactName,
       required this.floorAndUnitNumber,
       required this.phoneNumber});
+}
+
+class OrdersModelLocationSub {
+  List locationListName;
+  List locationListlocationLat;
+  List locationListlocationLong;
+  List locationListdescription;
+  List locationListphoneNumber;
+  List locationListcontactName;
+  List locationListfloorAndUnitNumber;
+  OrdersModelLocationSub({
+    required this.locationListName,
+    required this.locationListcontactName,
+    required this.locationListdescription,
+    required this.locationListfloorAndUnitNumber,
+    required this.locationListlocationLat,
+    required this.locationListlocationLong,
+    required this.locationListphoneNumber,
+  });
+}
+
+class OrdersModel {
+  String vehicleName;
+  double vehicelPrice;
+  List extraServiceName;
+  List extraServicePrice;
+  List specificationName;
+  List specificationPrice;
+  String orderRemark;
+  Timestamp time;
+  OrdersModelLocationSub ordersModelLocationSub;
+  int totalDistanceInt;
+  double totalDistancePrice;
+  double totalPrice;
+  bool favouriteDriverFirst;
+  bool cash;
+  String paidBy;
+  var moreDetailsImage;
+  String userName;
+  String type;
+  String email;
+  String userUid;
+  String documentId;
+  bool isTaken;
+  bool isDelivered;
+  bool isCanceled;
+  OrdersModel(
+      {required this.cash,
+      required this.email,
+      required this.extraServiceName,
+      required this.extraServicePrice,
+      required this.favouriteDriverFirst,
+      required this.moreDetailsImage,
+      required this.orderRemark,
+      required this.paidBy,
+      required this.specificationName,
+      required this.specificationPrice,
+      required this.time,
+      required this.totalDistanceInt,
+      required this.totalDistancePrice,
+      required this.totalPrice,
+      required this.type,
+      required this.userName,
+      required this.userUid,
+      required this.vehicelPrice,
+      required this.vehicleName,
+      required this.documentId,
+      required this.ordersModelLocationSub,
+      required this.isCanceled,
+      required this.isDelivered,
+      required this.isTaken
+      });
 }
