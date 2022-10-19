@@ -53,12 +53,12 @@ class _BaseScreenState extends State<BaseScreen> {
     return Scaffold(
       drawer: const DrawerContent(),
       appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            // systemNavigationBarColor: Colors.blue, // Navigation bar
-            statusBarColor: Color(0xFFFFF600), // Status bar
-          ),
-          centerTitle: true,
           backgroundColor: Colors.grey[50],
+          // systemOverlayStyle: SystemUiOverlayStyle(
+          //   // systemNavigationBarColor: Colors.blue, // Navigation bar
+          //   statusBarColor: Color(0xFFFFF600), // Status bar
+          // ),
+          centerTitle: true,
           elevation: 0,
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -129,7 +129,10 @@ class _BaseScreenState extends State<BaseScreen> {
                     ? Container(
                         height: myChildSize.height + 20,
                       )
-                    : Container()
+                    : Container(),
+                Container(
+                  height: 50,
+                ),
               ],
             ),
             vehicleAndLocationComplete == true

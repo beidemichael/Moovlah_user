@@ -55,11 +55,11 @@ class AuthServices {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailAddress,
-        password: password,
+        email: emailAddress.trim(),
+        password: password.trim(),
       );
       Provider.of<Order>(context, listen: false).changeScreen('welcome');
-     var userUid = await credential.user?.uid;
+      var userUid = await credential.user?.uid;
 
       await DatabaseService().newUserData(userName, phoneNumber, emailAddress,
           password, type, userUid.toString(), businessName);
@@ -120,7 +120,7 @@ class AuthServices {
       required String password}) async {
     try {
       final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: emailAddress, password: password);
+          .signInWithEmailAndPassword(email: emailAddress.trim(), password: password.trim());
       Provider.of<Order>(context, listen: false).changeScreen('welcome');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -167,7 +167,12 @@ class AuthServices {
                 ),
               ],
             )));
+      } else {
+        print(e);
       }
+    }
+    catch (e) {
+      print(e);
     }
   }
 }
