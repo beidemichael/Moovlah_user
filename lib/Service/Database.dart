@@ -152,6 +152,10 @@ class DatabaseService {
               (doc.data() as dynamic)['locationListlocationLat'] ?? [],
           locationListlocationLong:
               (doc.data() as dynamic)['locationListlocationLong'] ?? [],
+              specificLocationListlocationLat:
+              (doc.data() as dynamic)['specificLocationListlocationLat'] ?? [],
+          specificLocationListlocationLong:
+              (doc.data() as dynamic)['specificLocationListlocationLong'] ?? [],
           locationListphoneNumber:
               (doc.data() as dynamic)['locationListphoneNumber'] ?? [],
         ),
@@ -200,6 +204,8 @@ class DatabaseService {
     List locationListName,
     List locationListlocationLat,
     List locationListlocationLong,
+    List specificLocationListlocationLat,
+    List specificLocationListlocationLong,
     List locationListdescription,
     List locationListphoneNumber,
     List locationListcontactName,
@@ -229,6 +235,8 @@ class DatabaseService {
           'locationListName': locationListName,
           'locationListlocationLat': locationListlocationLat,
           'locationListlocationlong': locationListlocationLong,
+          'specificLocationListlocationLat': specificLocationListlocationLat,
+          'specificLocationListlocationLong': specificLocationListlocationLong,
           'locationListdescription': locationListdescription,
           'locationListphoneNumber': locationListphoneNumber,
           'locationListcontactName': locationListcontactName,

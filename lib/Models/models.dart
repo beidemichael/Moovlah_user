@@ -62,6 +62,7 @@ class LocationList {
   String name;
   // ignore: prefer_typing_uninitialized_variables
   LatLng location;
+  LatLng specificLocaion;
   String description;
   String phoneNumber;
   String contactName;
@@ -72,13 +73,16 @@ class LocationList {
       required this.description,
       required this.contactName,
       required this.floorAndUnitNumber,
-      required this.phoneNumber});
+      required this.phoneNumber,
+      required this.specificLocaion});
 }
 
 class OrdersModelLocationSub {
   List locationListName;
   List locationListlocationLat;
   List locationListlocationLong;
+  List specificLocationListlocationLat;
+  List specificLocationListlocationLong;
   List locationListdescription;
   List locationListphoneNumber;
   List locationListcontactName;
@@ -90,6 +94,8 @@ class OrdersModelLocationSub {
     required this.locationListfloorAndUnitNumber,
     required this.locationListlocationLat,
     required this.locationListlocationLong,
+    required this.specificLocationListlocationLat,
+    required this.specificLocationListlocationLong,
     required this.locationListphoneNumber,
   });
 }
@@ -143,6 +149,5 @@ class OrdersModel {
       required this.ordersModelLocationSub,
       required this.isCanceled,
       required this.isDelivered,
-      required this.isTaken
-      });
+      required this.isTaken});
 }

@@ -32,6 +32,8 @@ class MapForLocation extends StatefulWidget {
 class _MapForLocationState extends State<MapForLocation> {
   late LatLng _initialPosition;
   bool loading = false;
+  ArgumentCallback<LatLng>? onTap;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
@@ -79,6 +81,25 @@ class _MapForLocationState extends State<MapForLocation> {
     });
   }
 
+  _handleTap(LatLng point) {
+    setState(() {
+      // creating a new MARKER
+      final Marker marker = Marker(
+        markerId: MarkerId(point.toString()),
+        position: point,
+        infoWindow: const InfoWindow(
+          title: 'Location is Set',
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+      );
+      Provider.of<Order>(context, listen: false)
+          .addSpecificLocationPosition(point, widget.index);
+      setState(() {
+        markers[const MarkerId('123')] = marker;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     void whenAddInfoTapped() {
@@ -109,6 +130,7 @@ class _MapForLocationState extends State<MapForLocation> {
         : Stack(
             children: [
               GoogleMap(
+                markers: Set<Marker>.of(markers.values),
                 mapType: MapType.normal,
                 tiltGesturesEnabled: false,
                 zoomControlsEnabled: false,
@@ -118,6 +140,7 @@ class _MapForLocationState extends State<MapForLocation> {
                   target: _initialPosition,
                   zoom: 17.00,
                 ),
+                onTap: _handleTap,
                 onMapCreated: (GoogleMapController controller) {
                   widget.mapController.complete(controller);
                 },

@@ -43,6 +43,8 @@ class _BaseScreenState extends State<BaseScreen> {
     final vehicelPrice = Provider.of<Order>(context).vehicelePriceDisplay;
     final totalDistanceInt =
         Provider.of<Order>(context).totalDistanceIntDisplay;
+        final totalDistanceIntAsBool =
+        Provider.of<Order>(context).totalDistanceIntAsBoolDisplay;
     final totalDistancePrice =
         Provider.of<Order>(context).totalDistancePriceDisplay;
     final totalSpecificationsPrice =
@@ -81,7 +83,10 @@ class _BaseScreenState extends State<BaseScreen> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: vehicles.length,
                   itemBuilder: (context, index) {
-                    return GestureDetector(
+                    return vehicles[index].type == 'Walker/Bicycle' &&
+                            totalDistanceIntAsBool >= 5
+                        ? Container()
+                        : GestureDetector(
                       onTap: () {
                         // setState(() {
                         //   checkedindex = index;

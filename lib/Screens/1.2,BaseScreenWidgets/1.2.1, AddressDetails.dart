@@ -222,6 +222,7 @@ class _AddressDetailState extends State<AddressDetail> {
                                 .addLocationInfo(phoneNumber, contactName,
                                     floorAndUnitNumber, widget.index);
                             Navigator.of(context).pop();
+                            Navigator.of(context).pop();
                           }
                         },
                         child: YellowButton(text: 'Confirm'))

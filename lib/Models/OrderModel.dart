@@ -43,6 +43,7 @@ class Order extends ChangeNotifier {
     LocationList(
         name: 'Pick-up location',
         location: const LatLng(0.0, 0.0),
+        specificLocaion: const LatLng(0.0, 0.0),
         description: '',
         phoneNumber: '',
         contactName: '',
@@ -50,6 +51,7 @@ class Order extends ChangeNotifier {
     LocationList(
         name: 'Drop-off location',
         location: const LatLng(0.0, 0.0),
+        specificLocaion: const LatLng(0.0, 0.0),
         description: '',
         phoneNumber: '',
         contactName: '',
@@ -58,6 +60,8 @@ class Order extends ChangeNotifier {
   List locationListName = [];
   List locationListlocationLat = [];
   List locationListlocationLong = [];
+  List specificLocationListlocationLat = [];
+  List specificLocationListlocationLong = [];
   List locationListdescription = [];
   List locationListphoneNumber = [];
   List locationListcontactName = [];
@@ -72,6 +76,7 @@ class Order extends ChangeNotifier {
   bool priceCalculating = false;
   double totalDistance = 0.0;
   int totalDistanceInt = 0;
+  int totalDistanceIntAsBool = 0;
 
   bool finishedRouting = false;
   double totalExtraServicesPrice = 0.0;
@@ -117,6 +122,7 @@ class Order extends ChangeNotifier {
   //
   bool get priceCalculatingDisplay => priceCalculating;
   int get totalDistanceIntDisplay => totalDistanceInt;
+  int get totalDistanceIntAsBoolDisplay => totalDistanceIntAsBool;
   double get vehicelePriceDisplay => vehicelPrice;
   double get totalDistancePriceDisplay => totalDistancePrice;
   double get totalSpecificationsPriceDisplay => totalSpecificationsPrice;
@@ -146,6 +152,7 @@ class Order extends ChangeNotifier {
     locationList.add(locationFunction);
     resetVariables();
     calculateTotalPrice();
+
     notifyListeners();
   }
 
@@ -160,6 +167,7 @@ class Order extends ChangeNotifier {
     locationList.add(LocationList(
         name: 'Mid-stop location',
         location: const LatLng(0.0, 0.0),
+        specificLocaion: const LatLng(0.0, 0.0),
         description: '',
         phoneNumber: '',
         contactName: '',
@@ -190,6 +198,11 @@ class Order extends ChangeNotifier {
       String descriptionFunction, var locationFunction, int indexFunction) {
     locationList[indexFunction].description = descriptionFunction;
     locationList[indexFunction].location = locationFunction;
+    notifyListeners();
+  }
+
+  void addSpecificLocationPosition(var locationFunction, int indexFunction) {
+    locationList[indexFunction].specificLocaion = locationFunction;
     notifyListeners();
   }
 
@@ -282,6 +295,9 @@ class Order extends ChangeNotifier {
       vehicleAndLocationComplete = false;
       resetVariables();
     }
+    if (totalDistanceInt >= 5 && vehicleName == 'Walker/Bicycle') {
+      vehicleName = '';
+    }
 
     return vehicleAndLocationComplete;
   }
@@ -297,6 +313,11 @@ class Order extends ChangeNotifier {
           ).createPolylines();
     }
     totalDistanceInt = totalDistance.round();
+    if (totalDistanceInt != 0) {
+      totalDistanceIntAsBool = totalDistanceInt;
+    }
+
+    print('totalDistanceInt: ' + totalDistanceInt.toString());
     for (int i = 0; i < extraServicePrice.length; i++) {
       totalExtraServicesPrice = totalExtraServicesPrice + extraServicePrice[i];
     }
@@ -365,6 +386,7 @@ class Order extends ChangeNotifier {
       LocationList(
           name: 'Pick-up location',
           location: const LatLng(0.0, 0.0),
+          specificLocaion: const LatLng(0.0, 0.0),
           description: '',
           phoneNumber: '',
           contactName: '',
@@ -372,6 +394,7 @@ class Order extends ChangeNotifier {
       LocationList(
           name: 'Drop-off location',
           location: const LatLng(0.0, 0.0),
+          specificLocaion: const LatLng(0.0, 0.0),
           description: '',
           phoneNumber: '',
           contactName: '',
@@ -381,6 +404,8 @@ class Order extends ChangeNotifier {
     locationListlocationLat.clear();
     locationListlocationLong.clear();
     locationListdescription.clear();
+    specificLocationListlocationLat.clear();
+    specificLocationListlocationLong.clear();
     locationListphoneNumber.clear();
     locationListcontactName.clear();
     locationListfloorAndUnitNumber.clear();
@@ -412,6 +437,10 @@ class Order extends ChangeNotifier {
       locationListName.add(locationList[i].name);
       locationListlocationLat.add(locationList[i].location.latitude);
       locationListlocationLong.add(locationList[i].location.longitude);
+      specificLocationListlocationLat
+          .add(locationList[i].specificLocaion.latitude);
+      specificLocationListlocationLong
+          .add(locationList[i].specificLocaion.longitude);
       locationListdescription.add(locationList[i].description);
       locationListphoneNumber.add(locationList[i].phoneNumber);
       locationListcontactName.add(locationList[i].contactName);
@@ -443,6 +472,8 @@ class Order extends ChangeNotifier {
         locationListName,
         locationListlocationLat,
         locationListlocationLong,
+        specificLocationListlocationLat,
+        specificLocationListlocationLong,
         locationListdescription,
         locationListphoneNumber,
         locationListcontactName,
