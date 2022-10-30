@@ -9,7 +9,8 @@ import '../../Models/OrderModel.dart';
 import '1.1,LocationSearchScreen.dart';
 
 class AddLocation extends StatefulWidget {
-  const AddLocation({super.key});
+  String userUid;
+  AddLocation({super.key, required this.userUid});
 
   @override
   State<AddLocation> createState() => _AddLocationState();
@@ -19,7 +20,6 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     final locationList = Provider.of<Order>(context).locationListDisplay;
-    final time = Provider.of<Order>(context).time;
     void whenScheduleUpDateTapped() {
       DatePicker.showDateTimePicker(context,
           // minTime: DateTime.now(),
@@ -110,8 +110,8 @@ class _AddLocationState extends State<AddLocation> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) => LocationSearchScreen(
-                                                index: index,
-                                              )));
+                                              index: index,
+                                              userUid: widget.userUid)));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -129,7 +129,11 @@ class _AddLocationState extends State<AddLocation> {
                                           children: [
                                             Expanded(
                                               child: Padding(
-                                              padding:  index==0?  const EdgeInsets.only(right:15.0):const EdgeInsets.only(right:0.0),
+                                                padding: index == 0
+                                                    ? const EdgeInsets.only(
+                                                        right: 15.0)
+                                                    : const EdgeInsets.only(
+                                                        right: 0.0),
                                                 child: Text(
                                                   locationList[index]
                                                               .description ==
@@ -139,16 +143,20 @@ class _AddLocationState extends State<AddLocation> {
                                                           .description,
                                                   softWrap: false,
                                                   maxLines: 2,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       fontSize: 18.0,
                                                       color: locationList[index]
                                                                   .description ==
                                                               ''
-                                                          ? const Color.fromARGB(
-                                                              255, 160, 160, 160)
-                                                          : const Color.fromARGB(
+                                                          ? const Color
+                                                                  .fromARGB(255,
+                                                              160, 160, 160)
+                                                          : const Color
+                                                                  .fromARGB(
                                                               255, 0, 0, 0)),
                                                 ),
                                               ),

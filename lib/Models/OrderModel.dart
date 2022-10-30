@@ -317,7 +317,9 @@ class Order extends ChangeNotifier {
       totalDistanceIntAsBool = totalDistanceInt;
     }
 
-    print('totalDistanceInt: ' + totalDistanceInt.toString());
+    if (kDebugMode) {
+      print('totalDistanceInt: ' + totalDistanceInt.toString());
+    }
     for (int i = 0; i < extraServicePrice.length; i++) {
       totalExtraServicesPrice = totalExtraServicesPrice + extraServicePrice[i];
     }
@@ -450,7 +452,7 @@ class Order extends ChangeNotifier {
     if (moreDetailsImage != null) {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref =
-          storage.ref().child("DetailedImage" + DateTime.now().toString());
+          storage.ref().child("OrderDetailedImage/DetailedImage" + DateTime.now().toString());
       UploadTask uploadTask = ref.putFile(moreDetailsImage!);
 
       await uploadTask.then((res) async {

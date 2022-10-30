@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:moovlah_user/wrapper.dart';
 import 'package:provider/provider.dart';
-
-
 import 'Models/OrderModel.dart';
 import 'Models/models.dart';
 import 'Service/auth.dart';
@@ -32,13 +30,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: StreamProvider<UserAuth?>.value(
-            value: AuthServices().user,
-            initialData: null,
-            child: const Wrapper(),
-          ),
-        ));
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: StreamProvider<UserAuth?>.value(
+          value: AuthServices().user,
+          initialData: null,
+          child: const Wrapper(),
+        ),
+      ),
+    );
   }
 }

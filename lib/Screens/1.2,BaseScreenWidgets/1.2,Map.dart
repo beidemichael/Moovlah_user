@@ -3,15 +3,17 @@
 import 'dart:async';
 
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoder2/geocoder2.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:moovlah_user/Screens/1.2,BaseScreenWidgets/1.2.1,%20AddressDetails.dart';
 import 'package:moovlah_user/Shared/YellowButton.dart';
 import 'package:provider/provider.dart';
-
+import 'package:marquee_widget/marquee_widget.dart';
 import '../../Models/OrderModel.dart';
 import '../../Models/models.dart';
 
@@ -19,172 +21,169 @@ class MapForLocation extends StatefulWidget {
   Completer<GoogleMapController> mapController; //contrller for Google map
   CameraPosition? cameraPosition;
   int index;
-  MapForLocation(
-      {super.key,
-      required this.cameraPosition,
-      required this.mapController,
-      required this.index});
+  bool loading;
+  var initialPosition;
+  MapForLocation({
+    super.key,
+    required this.cameraPosition,
+    required this.mapController,
+    required this.index,
+    required this.initialPosition,
+    required this.loading,
+  });
 
   @override
   State<MapForLocation> createState() => _MapForLocationState();
 }
 
 class _MapForLocationState extends State<MapForLocation> {
-  late LatLng _initialPosition;
-  bool loading = false;
   ArgumentCallback<LatLng>? onTap;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
-  @override
-  void initState() {
-    super.initState();
-    _getUserLocation();
+  bool bottomSheetExpanded = false;
+  bool top = false;
+
+  _onCameraMove(CameraPosition position) {
+    Provider.of<Order>(context, listen: false)
+        .addSpecificLocationPosition(position.target, widget.index);
   }
-
-  void _getUserLocation() async {
-    setState(() {
-      loading = true;
-    });
-    Location location = new Location();
-
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    _locationData = await location.getLocation();
-
-    _initialPosition =
-        LatLng(_locationData.latitude!, _locationData.longitude!);
-
-    Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) {
-        setState(() {
-          loading = false;
-        });
-      }
-    });
-  }
-
-  _handleTap(LatLng point) {
-    setState(() {
-      // creating a new MARKER
-      final Marker marker = Marker(
-        markerId: MarkerId(point.toString()),
-        position: point,
-        infoWindow: const InfoWindow(
-          title: 'Location is Set',
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
-      );
-      Provider.of<Order>(context, listen: false)
-          .addSpecificLocationPosition(point, widget.index);
-      setState(() {
-        markers[const MarkerId('123')] = marker;
-      });
-    });
-  }
+  // _handleTap(LatLng point) {
+  //   setState(() {
+  //     // creating a new MARKER
+  //     final Marker marker = Marker(
+  //       markerId: MarkerId(point.toString()),
+  //       position: point,
+  //       infoWindow: const InfoWindow(
+  //         title: 'Location is Set',
+  //       ),
+  //       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+  //     );
+  //     Provider.of<Order>(context, listen: false)
+  //         .addSpecificLocationPosition(point, widget.index);
+  //     setState(() {
+  //       markers[const MarkerId('123')] = marker;
+  //     });
+  //     key.currentState!.expand();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    void whenAddInfoTapped() {
-      showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          isScrollControlled: true,
-          builder: (context) {
-            return Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: FractionallySizedBox(
-                heightFactor: 0.6,
-                child: Container(
-                  // padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: AddressDetail(index: widget.index),
-                ),
-              ),
-            );
-          });
-    }
+    final LocationListSpecific =
+        Provider.of<Order>(context).locationList[widget.index];
 
-    return loading == true
+    return widget.loading == true
         ? const Center(
             child: SpinKitCircle(
             color: Colors.black,
             size: 50.0,
           ))
-        : Stack(
-            children: [
-              GoogleMap(
-                markers: Set<Marker>.of(markers.values),
-                mapType: MapType.normal,
-                tiltGesturesEnabled: false,
-                zoomControlsEnabled: false,
-                initialCameraPosition: CameraPosition(
-                  tilt: 0,
-                  bearing: 0,
-                  target: _initialPosition,
-                  zoom: 17.00,
-                ),
-                onTap: _handleTap,
-                onMapCreated: (GoogleMapController controller) {
-                  widget.mapController.complete(controller);
-                },
-              ),
-              Positioned(
-                bottom: 20,
-                right: 0,
-                left: 0,
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {
-                      whenAddInfoTapped();
+        : Container(
+            color: Colors.white,
+            child: Center(
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    markers: Set<Marker>.of(markers.values),
+                    mapType: MapType.normal,
+                    tiltGesturesEnabled: false,
+
+                    zoomControlsEnabled: false,
+                    onCameraMoveStarted: () {
+                      if (mounted) {
+                        // key.currentState!.contract();
+                        setState(() {
+                          top = false;
+                          bottomSheetExpanded = true;
+                        });
+                      }
                     },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * .7,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
-                        border: Border.all(width: 1, color: Colors.black),
-                        borderRadius: BorderRadius.circular(35.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.shade800,
-                            blurRadius: 105.0, //effect of softening the shadow
-                            spreadRadius: 1.7, //effecet of extending the shadow
-                            offset: const Offset(
-                                0.0, //horizontal
-                                0.0 //vertical
-                                ),
-                          ),
-                        ],
-                      ),
-                      child: const Center(
-                        child: Text('Add Adress Details',
-                            style: TextStyle(
-                                fontSize: 21.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600)),
+                    onCameraIdle: () {
+                      if (mounted) {
+                        if (bottomSheetExpanded) {
+                          // key.currentState!.expand();
+
+                        }
+                         setState(() {
+                          top = true;
+                        });
+                        _onCameraMove;
+                      }
+                    },
+                    initialCameraPosition: CameraPosition(
+                      tilt: 0,
+                      bearing: 0,
+                      target: widget.initialPosition,
+                      zoom: 17.00,
+                    ),
+                    // onTap: _handleTap,
+                    // onCameraMove: _onCameraMove,
+                    onMapCreated: (GoogleMapController controller) {
+                      widget.mapController.complete(controller);
+                      //  key.currentState!.contract();
+                    },
+                  ),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Visibility(
+                      visible: top,
+                      child: const Icon(
+                        FontAwesomeIcons.mapPin,
+                        size: 40.0,
+                        color: Color.fromARGB(255, 255, 0, 0),
                       ),
                     ),
                   ),
-                ),
-              )
-            ],
+                  Positioned(
+                    top: -30,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Visibility(
+                      visible: !top,
+                      child: const Icon(
+                        FontAwesomeIcons.mapPin,
+                        size: 40.0,
+                        color: Color.fromARGB(255, 255, 0, 0),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 50,
+                    bottom: 0,
+                    right: -3,
+                    left: 0,
+                    child: Center(
+                      child: Container(
+                        height: 8,
+                        width: 10,
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30.0),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromARGB(255, 136, 136, 136),
+                              blurRadius: 1.0, //effect of softening the shadow
+                              spreadRadius:
+                                  0.1, //effecet of extending the shadow
+                              offset: Offset(
+                                  0.0, //horizontal
+                                  -2.0 //vertical
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           );
   }
 }

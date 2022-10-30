@@ -27,6 +27,6 @@ class _WrapperState extends State<Wrapper> {
                 value: DatabaseService().vehicles,
                 initialData: const [],
                 catchError: (_, __) => [],
-                child: const BaseScreen()));
+                child:  BaseScreen(userUid:user.uid)));
   }
 }

@@ -3,9 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:moovlah_user/Service/auth.dart';
-import 'package:provider/provider.dart';
-
-import '../Models/models.dart';
 import '../Shared/YellowButton.dart';
 
 class Personal extends StatefulWidget {

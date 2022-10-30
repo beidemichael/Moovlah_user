@@ -29,6 +29,7 @@ class _SpecificationsState extends State<Specifications> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
+              
               'Specifications',
               style: TextStyle(
                   fontWeight: FontWeight.w500,

@@ -8,7 +8,7 @@ import '../../Shared/YellowButton.dart';
 
 class AddressDetail extends StatefulWidget {
   int index;
-   AddressDetail({super.key, required this.index});
+  AddressDetail({super.key, required this.index});
 
   @override
   State<AddressDetail> createState() => _AddressDetailState();
@@ -19,48 +19,32 @@ class _AddressDetailState extends State<AddressDetail> {
   String phoneNumber = "";
   String contactName = "";
   String floorAndUnitNumber = "";
-   void _onCountryChange(CountryCode countryCode) {
+  void _onCountryChange(CountryCode countryCode) {
     setState(() {
       phoneCode = countryCode.toString();
     });
 
     print("New Country selected: " + countryCode.toString());
   }
+
   @override
   Widget build(BuildContext context) {
     final locationInput = Provider.of<Order>(context).locationInputDisplay;
-     String locationListDescription =
+    String locationListDescription =
         Provider.of<Order>(context).locationDescription(widget.index);
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.5,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade500,
-            blurRadius: 1.0, //effect of softening the shadow
-            spreadRadius: 0.1, //effecet of extending the shadow
-            offset: const Offset(
-                0.0, //horizontal
-                -1.0 //vertical
-                ),
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(25.0),
-          topLeft: Radius.circular(25.0),
-        ),
-      ),
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Column(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     const Text('Address Details',
                         style: TextStyle(
@@ -222,7 +206,7 @@ class _AddressDetailState extends State<AddressDetail> {
                                 .addLocationInfo(phoneNumber, contactName,
                                     floorAndUnitNumber, widget.index);
                             Navigator.of(context).pop();
-                            Navigator.of(context).pop();
+                           
                           }
                         },
                         child: YellowButton(text: 'Confirm'))

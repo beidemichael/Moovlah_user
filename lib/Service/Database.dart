@@ -15,6 +15,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Users');
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('Orders');
+      final CollectionReference savedPlacesCollection =
+      FirebaseFirestore.instance.collection('SavedPlaces');
 
 //1//////////////////User//////////////////////////////////////////////////
 //1.1//////////////////Write//////////////////////////////////////////////////
@@ -152,7 +154,7 @@ class DatabaseService {
               (doc.data() as dynamic)['locationListlocationLat'] ?? [],
           locationListlocationLong:
               (doc.data() as dynamic)['locationListlocationLong'] ?? [],
-              specificLocationListlocationLat:
+          specificLocationListlocationLat:
               (doc.data() as dynamic)['specificLocationListlocationLat'] ?? [],
           specificLocationListlocationLong:
               (doc.data() as dynamic)['specificLocationListlocationLong'] ?? [],
@@ -258,6 +260,17 @@ class DatabaseService {
         })
         .then((value) => print("Order Added"))
         .catchError((error) => print("Failed to publish Order: $error"));
+  }
+
+  Future savedPlaces(String userUid, var location, String description) async {
+    savedPlacesCollection
+        .add({
+          'created': Timestamp.now(),
+          'userUid': userUid,
+          'description': description,
+        })
+        .then((value) => print("savedPlaces Added"))
+        .catchError((error) => print("Failed to publish savedPlaces: $error"));
   }
 //3.2//////////////////Write//////////////////////////////////////////////////
 //3///////////////////Order//////////////////////////////////////////////////
