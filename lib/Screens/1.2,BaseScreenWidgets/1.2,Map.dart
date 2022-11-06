@@ -42,11 +42,26 @@ class _MapForLocationState extends State<MapForLocation> {
 
   bool bottomSheetExpanded = false;
   bool top = false;
+  CameraPosition position2 = CameraPosition(target: const LatLng(0, 0));
 
-  _onCameraMove(CameraPosition position) {
-    Provider.of<Order>(context, listen: false)
-        .addSpecificLocationPosition(position.target, widget.index);
+  void _onCameraMove(CameraPosition position) {
+    position2 = position;
   }
+
+  _updateAdress() async {
+    if (position2.target.latitude != 0) {
+      Provider.of<Order>(context, listen: false)
+          .addSpecificLocationPosition(position2.target, widget.index);
+      var fetchGeocoder = await Geocoder2.getDataFromCoordinates(
+          latitude: position2.target.latitude,
+          longitude: position2.target.longitude,
+          googleMapApiKey: "AIzaSyDC8eK2_tywqgCtS8kLaOdrjs61aMVP1hI");
+      Provider.of<Order>(context, listen: false).addLocationPosition(
+          fetchGeocoder.address, position2.target, widget.index);
+      print('New map address: ' + fetchGeocoder.address);
+    }
+  }
+
   // _handleTap(LatLng point) {
   //   setState(() {
   //     // creating a new MARKER
@@ -66,6 +81,11 @@ class _MapForLocationState extends State<MapForLocation> {
   //     key.currentState!.expand();
   //   });
   // }
+  Future<void> initialAnimateCamera() async {
+    final GoogleMapController controller = await widget.mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(target: widget.initialPosition, zoom: 17)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,16 +118,18 @@ class _MapForLocationState extends State<MapForLocation> {
                         });
                       }
                     },
+                    onCameraMove: _onCameraMove,
                     onCameraIdle: () {
                       if (mounted) {
                         if (bottomSheetExpanded) {
                           // key.currentState!.expand();
 
                         }
-                         setState(() {
+                        setState(() {
                           top = true;
                         });
-                        _onCameraMove;
+                        // _onCameraMove;
+                        _updateAdress();
                       }
                     },
                     initialCameraPosition: CameraPosition(
@@ -120,6 +142,7 @@ class _MapForLocationState extends State<MapForLocation> {
                     // onCameraMove: _onCameraMove,
                     onMapCreated: (GoogleMapController controller) {
                       widget.mapController.complete(controller);
+                      initialAnimateCamera();
                       //  key.currentState!.contract();
                     },
                   ),

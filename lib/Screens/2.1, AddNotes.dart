@@ -17,11 +17,12 @@ class _AddNotesState extends State<AddNotes> {
   @override
   Widget build(BuildContext context) {
     final orderRemarkDisplay = Provider.of<Order>(context).orderRemarkDisplay;
+    final dartMode = Provider.of<Order>(context).dartMode;
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor:  dartMode ? Colors.grey[800] : Colors.grey[100],
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.grey[100],
+          backgroundColor:  dartMode ? Colors.grey[800] : Colors.grey[100],
           elevation: 0,
           title: Row(
             mainAxisSize: MainAxisSize.min,

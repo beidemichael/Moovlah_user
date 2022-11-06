@@ -32,9 +32,10 @@ class _AddressDetailState extends State<AddressDetail> {
     final locationInput = Provider.of<Order>(context).locationInputDisplay;
     String locationListDescription =
         Provider.of<Order>(context).locationDescription(widget.index);
+        final dartMode = Provider.of<Order>(context).dartMode;
     return Container(
       width: MediaQuery.of(context).size.width,
-      color: Colors.white,
+      color: dartMode ? Colors.grey[800] : Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40),
         child: Column(
@@ -46,10 +47,10 @@ class _AddressDetailState extends State<AddressDetail> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
-                    const Text('Address Details',
+                     Text('Address Details',
                         style: TextStyle(
                             fontSize: 24.0,
-                            color: Colors.black,
+                            color: dartMode ? Colors.white : Colors.black,
                             fontWeight: FontWeight.w500)),
                   ],
                 ),
@@ -58,7 +59,7 @@ class _AddressDetailState extends State<AddressDetail> {
                   child: Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.white,
                       border: Border.all(width: 1, color: Colors.grey),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10.0),
@@ -73,7 +74,9 @@ class _AddressDetailState extends State<AddressDetail> {
                             initialSelection: '+65',
                             favorite: ['+65', 'SG'],
                             textStyle: TextStyle(
-                                color: Colors.grey[700],
+                                color:  dartMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[700],
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w200),
                           ),
@@ -91,7 +94,9 @@ class _AddressDetailState extends State<AddressDetail> {
                             },
                             keyboardType: TextInputType.phone,
                             style: TextStyle(
-                                color: Colors.grey[700],
+                                color:  dartMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[700],
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w500),
                             decoration: InputDecoration(
@@ -99,7 +104,9 @@ class _AddressDetailState extends State<AddressDetail> {
                               labelText: 'Enter Phone Number',
                               focusColor: Colors.orange[900],
                               labelStyle: TextStyle(
-                                  color: Colors.grey[700],
+                                  color:  dartMode
+                                      ? Colors.grey[400]
+                                      : Colors.grey[700],
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -114,7 +121,7 @@ class _AddressDetailState extends State<AddressDetail> {
                   child: Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.white,
                       border: Border.all(width: 1, color: Colors.grey),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10.0),
@@ -132,7 +139,9 @@ class _AddressDetailState extends State<AddressDetail> {
                               });
                             },
                             style: TextStyle(
-                                color: Colors.grey[700],
+                                color:  dartMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[700],
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w500),
                             decoration: InputDecoration(
@@ -140,7 +149,9 @@ class _AddressDetailState extends State<AddressDetail> {
                               labelText: 'Contact Name',
                               focusColor: Colors.orange[900],
                               labelStyle: TextStyle(
-                                  color: Colors.grey[700],
+                                  color:  dartMode
+                                      ? Colors.grey[400]
+                                      : Colors.grey[700],
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -155,7 +166,7 @@ class _AddressDetailState extends State<AddressDetail> {
                   child: Container(
                     height: 60,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.white,
                       border: Border.all(width: 1, color: Colors.grey),
                       borderRadius: const BorderRadius.all(
                         Radius.circular(10.0),
@@ -174,7 +185,9 @@ class _AddressDetailState extends State<AddressDetail> {
                               });
                             },
                             style: TextStyle(
-                                color: Colors.grey[700],
+                                color:  dartMode
+                                    ? Colors.grey[400]
+                                    : Colors.grey[700],
                                 fontSize: 20.0,
                                 fontWeight: FontWeight.w500),
                             decoration: InputDecoration(
@@ -182,7 +195,10 @@ class _AddressDetailState extends State<AddressDetail> {
                               labelText: 'Floor and Unit Number',
                               focusColor: Colors.orange[900],
                               labelStyle: TextStyle(
-                                  color: Colors.grey[700],
+                                  color: dartMode
+                                      ? Colors.grey[400]
+                                      : Colors.grey[700],
+                                  
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w300),
                             ),

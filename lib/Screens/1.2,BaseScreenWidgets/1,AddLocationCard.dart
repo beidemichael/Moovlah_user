@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:moovlah_user/Models/models.dart';
 import 'package:provider/provider.dart';
 
 import '../../Models/OrderModel.dart';
+import '../../Service/Database.dart';
 import '1.1,LocationSearchScreen.dart';
 
 class AddLocation extends StatefulWidget {
@@ -20,15 +22,23 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     final locationList = Provider.of<Order>(context).locationListDisplay;
+    final dartMode = Provider.of<Order>(context).dartMode;
     void whenScheduleUpDateTapped() {
       DatePicker.showDateTimePicker(context,
           // minTime: DateTime.now(),
+
           showTitleActions: true,
-          theme: const DatePickerTheme(
+          theme: DatePickerTheme(
               containerHeight: 400,
-              itemStyle: TextStyle(color: Colors.black, fontSize: 18),
-              doneStyle: TextStyle(color: Colors.black, fontSize: 16)),
-          onChanged: (date) {
+              backgroundColor:
+                  dartMode ? Color.fromARGB(255, 97, 97, 97) : Colors.white,
+              cancelStyle: TextStyle(
+                  color: dartMode ? Colors.white : Colors.black, fontSize: 16),
+              itemStyle: TextStyle(
+                  color: dartMode ? Colors.white : Colors.black, fontSize: 18),
+              doneStyle: TextStyle(
+                  color: dartMode ? Colors.white : Colors.black,
+                  fontSize: 16)), onChanged: (date) {
         print('change $date in time zone ' +
             date.timeZoneOffset.inHours.toString());
       }, onConfirm: (date) {
@@ -44,7 +54,7 @@ class _AddLocationState extends State<AddLocation> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade400,
+              color: dartMode ? Colors.black : Colors.grey.shade400,
               blurRadius: 5.0, //effect of softening the shadow
               spreadRadius: 0.5, //effecet of extending the shadow
               offset: const Offset(
@@ -53,7 +63,7 @@ class _AddLocationState extends State<AddLocation> {
                   ),
             ),
           ],
-          color: Colors.white,
+          color: dartMode ? Colors.grey[800] : Colors.white,
           border: Border.all(width: 1, color: Colors.black),
           borderRadius: const BorderRadius.all(
             Radius.circular(15.0),
@@ -109,9 +119,16 @@ class _AddLocationState extends State<AddLocation> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) => LocationSearchScreen(
-                                              index: index,
-                                              userUid: widget.userUid)));
+                                          builder: (_) => StreamProvider<
+                                                  List<SavedPlaces>>.value(
+                                              value: DatabaseService(
+                                                      userUid: widget.userUid)
+                                                  .savedPlacesInfo,
+                                              initialData: const [],
+                                              catchError: (_, __) => [],
+                                              child: LocationSearchScreen(
+                                                  index: index,
+                                                  userUid: widget.userUid))));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -146,18 +163,17 @@ class _AddLocationState extends State<AddLocation> {
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 18.0,
-                                                      color: locationList[index]
-                                                                  .description ==
-                                                              ''
-                                                          ? const Color
-                                                                  .fromARGB(255,
-                                                              160, 160, 160)
-                                                          : const Color
-                                                                  .fromARGB(
-                                                              255, 0, 0, 0)),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18.0,
+                                                    color: locationList[index]
+                                                                .description ==
+                                                            ''
+                                                        ? const Color.fromARGB(
+                                                            255, 160, 160, 160)
+                                                        : dartMode
+                                                            ? Colors.white
+                                                            : Colors.black,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -215,26 +231,27 @@ class _AddLocationState extends State<AddLocation> {
                       whenScheduleUpDateTapped();
                     },
                     child: Container(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.white,
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
                           // ignore: prefer_const_literals_to_create_immutables
                           children: [
-                            const Icon(
+                            Icon(
                               FontAwesomeIcons.solidClock,
                               size: 13.0,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: dartMode ? Colors.white : Colors.black,
                             ),
                             const SizedBox(
                               width: 10,
                             ),
-                            const Text(
+                            Text(
                               'Schedule',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 15.0,
-                                  color: Colors.black),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15.0,
+                                color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -256,8 +273,8 @@ class _AddLocationState extends State<AddLocation> {
               child: Container(
                 height: 60,
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: dartMode ? Colors.grey[800] : Colors.white,
                   borderRadius: BorderRadius.all(
                     Radius.circular(15.0),
                   ),
@@ -271,7 +288,7 @@ class _AddLocationState extends State<AddLocation> {
                       Icon(
                         FontAwesomeIcons.plus,
                         size: 22.0,
-                        color: Colors.black,
+                        color: dartMode ? Colors.white : Colors.black,
                       ),
                       const SizedBox(
                         width: 5,
@@ -279,10 +296,11 @@ class _AddLocationState extends State<AddLocation> {
                       // ignore: prefer_const_constructors
                       Text(
                         'Add Stoppage',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 20.0,
-                            color: Colors.black),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20.0,
+                          color: dartMode ? Colors.white : Colors.black,
+                        ),
                       ),
                     ],
                   ),

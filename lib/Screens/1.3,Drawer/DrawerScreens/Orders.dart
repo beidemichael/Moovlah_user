@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Models/OrderModel.dart';
 import '../../../Models/models.dart';
 import 'OrdersWidget/OrdesCard.dart';
 
@@ -20,8 +21,9 @@ class _OrdersState extends State<Orders> {
   @override
   Widget build(BuildContext context) {
     final orders = Provider.of<List<OrdersModel>>(context);
+    final dartMode = Provider.of<Order>(context).dartMode;
     // ignore: prefer_const_constructors
-    const upperTab = TabBar(
+    var upperTab = TabBar(
         indicatorColor: Color.fromARGB(255, 235, 227, 0),
         indicatorWeight: 6,
         // indicator: BoxDecoration(
@@ -35,40 +37,41 @@ class _OrdersState extends State<Orders> {
             child: Text('InProgress',
                 style: TextStyle(
                     fontSize: 18.0,
-                    color: Colors.black,
+                    color: dartMode ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w500)),
           ),
           Tab(
             child: Text('Concluded',
                 style: TextStyle(
                     fontSize: 18.0,
-                    color: Colors.black,
+                    color: dartMode ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w500)),
           ),
           Tab(
             child: Text('Dropped',
                 style: TextStyle(
                     fontSize: 18.0,
-                    color: Colors.black,
+                    color: dartMode ? Colors.white : Colors.black,
                     fontWeight: FontWeight.w500)),
           ),
         ]);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[50],
         appBar: AppBar(
             centerTitle: true,
-            backgroundColor: Colors.grey[50],
+            backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[50],
             // foregroundColor: Colors.red,
             elevation: 0,
             surfaceTintColor: Color(0xFFFFF600),
             title: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('Orders',
+                 Text('Orders',
                     style: TextStyle(
                         fontSize: 21.0,
-                        color: Colors.black,
+                        color: dartMode ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w600)),
               ],
             ),
@@ -77,7 +80,7 @@ class _OrdersState extends State<Orders> {
         body: TabBarView(
           children: [
             Container(
-              color: Colors.grey[200],
+              color: dartMode ? Colors.grey[600] : Colors.grey[200],
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(
@@ -120,7 +123,7 @@ class _OrdersState extends State<Orders> {
                   }),
             ),
             Container(
-              color: Colors.grey[200],
+              color: dartMode ? Colors.grey[600] : Colors.grey[200],
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(
@@ -163,7 +166,7 @@ class _OrdersState extends State<Orders> {
                   }),
             ),
             Container(
-              color: Colors.grey[200],
+              color: dartMode ? Colors.grey[600] : Colors.grey[200],
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
                   physics: const BouncingScrollPhysics(

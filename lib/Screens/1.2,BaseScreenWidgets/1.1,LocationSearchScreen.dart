@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:moovlah_user/Models/models.dart';
 
 import 'package:provider/provider.dart';
 import 'dart:async';
@@ -102,7 +103,8 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final locationList = Provider.of<Order>(context).locationListDisplay;
-
+    final savedPlaces = Provider.of<List<SavedPlaces>>(context);
+    final dartMode = Provider.of<Order>(context).dartMode;
     return Scaffold(
         body: ExpandableBottomSheet(
       // onIsExtendedCallback: bottomSheetContract(),
@@ -111,19 +113,19 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
       enableToggle: true,
       expandableContent: Container(
         height: 400,
-        color: Colors.white,
+        color: dartMode ? Colors.grey[800] : Colors.white,
         child: Center(
           child: AddressDetail(index: widget.index),
         ),
       ),
       persistentHeader: Container(
         height: 40,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration:  BoxDecoration(
+          color: dartMode ? Colors.grey[800] : Colors.white,
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               color: Color.fromARGB(255, 189, 189, 189),
               blurRadius: 1.0, //effect of softening the shadow
               spreadRadius: 0.1, //effecet of extending the shadow
@@ -139,7 +141,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
             height: 8,
             width: 70,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: dartMode ? Colors.grey[500] : Colors.grey[300] ,
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0),
@@ -167,23 +169,76 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: Container(
-                  height: 100,
+                  // height: 100,
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.grey.shade500,
-                    //     blurRadius: 1.0, //effect of softening the shadow
-                    //     spreadRadius: 0.1, //effecet of extending the shadow
-                    //     offset: const Offset(
-                    //         0.0, //horizontal
-                    //         1.0 //vertical
-                    //         ),
-                    //   ),
-                    // ],
-                    color: Colors.white.withOpacity(0.6),
+                    color: dartMode ? Colors.black.withOpacity(0.8) : Colors.white.withOpacity(0.8),
                     border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Column(
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: savedPlaces.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () async {
+                              Provider.of<Order>(context, listen: false)
+                                  .addLocationPosition(
+                                      savedPlaces[index].description,
+                                      LatLng(savedPlaces[index].lat,
+                                          savedPlaces[index].long),
+                                      widget.index);
+                              final c = await mapController.future;
+                              final p = CameraPosition(
+                                  target: LatLng(savedPlaces[index].lat,
+                                      savedPlaces[index].long),
+                                  zoom: 17);
+                              c.animateCamera(
+                                  CameraUpdate.newCameraPosition(p));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 10),
+                              child: Row(
+                                children: [
+                                   Icon(
+                                    FontAwesomeIcons.solidCircle,
+                                    size: 7.0,
+                                    color: dartMode ? Colors.white : Colors.black,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Flexible(
+                                    child: Text(savedPlaces[index].description,
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: false,
+                                        style:  TextStyle(
+                                            fontSize: 15.0,
+                                            color: dartMode
+                                                ? Colors.white
+                                                : Colors.black,
+                                            fontWeight: FontWeight.w500)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                       Text('Recent Places',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color: dartMode ? Colors.white : Colors.black,
+                              fontWeight: FontWeight.w600)),
+                    ],
                   ),
                 ),
               ),
@@ -192,41 +247,44 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
           Positioned(
             top: 170,
             right: 30,
-            child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  Provider.of<Order>(context, listen: false)
-                      .addLocationPosition(
-                          adressName, _initialPosition, widget.index);
-                  key.currentState!.expand();
-                  // print(key.currentState!.expansionStatus);
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    // border: Border.all(
-                    //     width: 1,
-                    //     color:
-                    //         const Color.fromARGB(255, 112, 112, 112)),
-                    borderRadius: BorderRadius.circular(50.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade700,
-                        blurRadius: 2.0, //effect of softening the shadow
-                        spreadRadius: 0.7, //effecet of extending the shadow
-                        offset: const Offset(
-                            0.0, //horizontal
-                            0.0 //vertical
-                            ),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    FontAwesomeIcons.crosshairs,
-                    size: 20.0,
-                    color: Color.fromARGB(255, 97, 97, 97),
+            child: Visibility(
+              visible: adressName!=null,
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Provider.of<Order>(context, listen: false)
+                        .addLocationPosition(
+                            adressName, _initialPosition, widget.index);
+                    key.currentState!.expand();
+                    // print(key.currentState!.expansionStatus);
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: dartMode ? Colors.grey[500] : Colors.white,
+                      // border: Border.all(
+                      //     width: 1,
+                      //     color:
+                      //         const Color.fromARGB(255, 112, 112, 112)),
+                      borderRadius: BorderRadius.circular(50.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: dartMode ? Colors.black : Colors.grey.shade700,
+                          blurRadius: 2.0, //effect of softening the shadow
+                          spreadRadius: 0.7, //effecet of extending the shadow
+                          offset: const Offset(
+                              0.0, //horizontal
+                              0.0 //vertical
+                              ),
+                        ),
+                      ],
+                    ),
+                    child:  Icon(
+                      FontAwesomeIcons.crosshairs,
+                      size: 20.0,
+                      color: dartMode ? Colors.black : Colors.grey.shade400,
+                    ),
                   ),
                 ),
               ),
@@ -286,7 +344,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                       .addLocationPosition(
                           description, coordinate, widget.index);
                   DatabaseService()
-                      .savedPlaces(widget.userUid, coordinate, description);
+                      .savedPlaces(widget.userUid, lat, lang, description);
                   Provider.of<Order>(context, listen: false)
                       .locationInputLoading();
                 }
@@ -308,7 +366,7 @@ class _LocationSearchScreenState extends State<LocationSearchScreen> {
                             ),
                       ),
                     ],
-                    color: Colors.white,
+                    color:  dartMode ? Colors.grey[500] : Colors.white,
                     border: Border.all(width: 1, color: Colors.grey),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(10.0),

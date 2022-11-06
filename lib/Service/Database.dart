@@ -3,6 +3,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Models/models.dart';
+//
+// 1,User
+// 2,Vehicle
+// 3,Order
+// 4,SavedPlaces
+//
 
 class DatabaseService {
   var userUid;
@@ -15,7 +21,7 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('Users');
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('Orders');
-      final CollectionReference savedPlacesCollection =
+  final CollectionReference savedPlacesCollection =
       FirebaseFirestore.instance.collection('SavedPlaces');
 
 //1//////////////////User//////////////////////////////////////////////////
@@ -262,16 +268,46 @@ class DatabaseService {
         .catchError((error) => print("Failed to publish Order: $error"));
   }
 
-  Future savedPlaces(String userUid, var location, String description) async {
+//3.2//////////////////Write//////////////////////////////////////////////////
+//3///////////////////Order//////////////////////////////////////////////////
+//4///////////////////Saved Places//////////////////////////////////////////////////
+//4.1//////////////////Read//////////////////////////////////////////////////
+  List<SavedPlaces> _savedPlacesListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return SavedPlaces(
+        description: (doc.data() as dynamic)['description'] ?? '',
+        lat: (doc.data() as dynamic)['lat'] ?? 0.0,
+        long: (doc.data() as dynamic)['long'] ?? 0.0,
+        documentId: doc.reference.id,
+      );
+    }).toList();
+  }
+
+  //orders lounges stream
+  Stream<List<SavedPlaces>> get savedPlacesInfo {
+    return savedPlacesCollection
+        .where('userUid', isEqualTo: userUid)
+        .orderBy('created', descending: true)
+        .limit(20)
+        .snapshots()
+        .map(_savedPlacesListFromSnapshot);
+  }
+
+//4.1//////////////////Read//////////////////////////////////////////////////
+//4.2//////////////////Write//////////////////////////////////////////////////
+  Future savedPlaces(String userUid, double locationLat, double locationLong,
+      String description) async {
     savedPlacesCollection
         .add({
           'created': Timestamp.now(),
           'userUid': userUid,
           'description': description,
+          'lat': locationLat,
+          'long': locationLong
         })
         .then((value) => print("savedPlaces Added"))
         .catchError((error) => print("Failed to publish savedPlaces: $error"));
   }
-//3.2//////////////////Write//////////////////////////////////////////////////
-//3///////////////////Order//////////////////////////////////////////////////
+//4.2//////////////////Write//////////////////////////////////////////////////
+//4///////////////////Saved Places//////////////////////////////////////////////////
 }

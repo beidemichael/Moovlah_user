@@ -52,10 +52,12 @@ class _BaseScreenState extends State<BaseScreen> {
     final totalExtraServicesPrice =
         Provider.of<Order>(context).totalExtraServicesPriceDisplay;
     final totalPrice = Provider.of<Order>(context).totalPriceDisplay;
+    final dartMode = Provider.of<Order>(context).dartMode;
     return Scaffold(
+      backgroundColor: dartMode ?Colors.grey[800]:Colors.grey[50],
       drawer: const DrawerContent(),
       appBar: AppBar(
-          backgroundColor: Colors.grey[50],
+          backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[50],
           // systemOverlayStyle: SystemUiOverlayStyle(
           //   // systemNavigationBarColor: Colors.blue, // Navigation bar
           //   statusBarColor: Color(0xFFFFF600), // Status bar
@@ -106,22 +108,26 @@ class _BaseScreenState extends State<BaseScreen> {
                                 ),
                                 vehicleName == vehicles[index].type
                                     ? index % 2 == 0
-                                        ? const Positioned(
+                                        ?  Positioned(
                                             top: 5,
                                             left: 15,
                                             child: Icon(
                                               FontAwesomeIcons.solidCircleCheck,
                                               size: 25.0,
-                                              color: Colors.black,
+                                              color: dartMode
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
                                           )
-                                        : const Positioned(
+                                        :  Positioned(
                                             top: 5,
                                             right: 15,
                                             child: Icon(
                                               FontAwesomeIcons.solidCircleCheck,
                                               size: 25.0,
-                                              color: Colors.black,
+                                              color: dartMode
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
                                           )
                                     : Container(
@@ -156,7 +162,9 @@ class _BaseScreenState extends State<BaseScreen> {
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.shade400,
+                              color: dartMode
+                                  ? Color.fromARGB(255, 44, 44, 44)
+                                  : Colors.grey.shade400,
                               blurRadius:
                                   1055.0, //effect of softening the shadow
                               spreadRadius:
@@ -167,7 +175,8 @@ class _BaseScreenState extends State<BaseScreen> {
                                   ),
                             ),
                           ],
-                          color: Colors.white,
+                          color: dartMode ? Colors.black : Colors.white,
+
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(40.0),
                             topRight: Radius.circular(40.0),
@@ -193,10 +202,12 @@ class _BaseScreenState extends State<BaseScreen> {
                                     child: Column(
                                       children: [
                                         totalDistanceInt == 0
-                                            ? const Text('Calculating...',
+                                            ?  Text('Calculating...',
                                                 style: TextStyle(
                                                     fontSize: 21.0,
-                                                    color: Color.fromARGB(
+                                                    color: dartMode
+                                                        ? Colors.grey[400]
+                                                        : Color.fromARGB(
                                                         255, 121, 121, 121),
                                                     fontWeight:
                                                         FontWeight.w500))
@@ -207,12 +218,15 @@ class _BaseScreenState extends State<BaseScreen> {
                                                         MainAxisAlignment.start,
                                                     // ignore: prefer_const_literals_to_create_immutables
                                                     children: [
-                                                      const Text(
+                                                       Text(
                                                           'Price Details',
                                                           style: TextStyle(
                                                               fontSize: 21.0,
                                                               color:
-                                                                  Colors.black,
+                                                                  dartMode
+                                                                  ? Colors.white
+                                                                  : Colors
+                                                                      .black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w500)),
@@ -226,29 +240,35 @@ class _BaseScreenState extends State<BaseScreen> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      const Text('Base Price',
+                                                       Text('Base Price',
                                                           style: TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
                                                       Text(
                                                           'S\$' +
                                                               '${vehicelPrice}KM',
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -261,14 +281,17 @@ class _BaseScreenState extends State<BaseScreen> {
                                                     children: [
                                                       Text(
                                                           'Overmileage ($totalDistanceInt km)',
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color:  dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -277,14 +300,17 @@ class _BaseScreenState extends State<BaseScreen> {
                                                           'S\$' +
                                                               totalDistancePrice
                                                                   .toString(),
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -295,16 +321,19 @@ class _BaseScreenState extends State<BaseScreen> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      const Text(
+                                                       Text(
                                                           'Extra Service',
                                                           style: TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -313,14 +342,17 @@ class _BaseScreenState extends State<BaseScreen> {
                                                           'S\$' +
                                                               totalExtraServicesPrice
                                                                   .toString(),
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color:  dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -331,11 +363,14 @@ class _BaseScreenState extends State<BaseScreen> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      const Text(
+                                                       Text(
                                                           'Specification',
                                                           style: TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  :  Color
                                                                   .fromARGB(
                                                                       255,
                                                                       100,
@@ -349,14 +384,17 @@ class _BaseScreenState extends State<BaseScreen> {
                                                           'S\$' +
                                                               totalSpecificationsPrice
                                                                   .toString(),
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 18.0,
-                                                              color: Color
-                                                                  .fromARGB(
-                                                                      255,
-                                                                      100,
-                                                                      100,
-                                                                      100),
+                                                              color: dartMode
+                                                                  ? Colors
+                                                                      .grey[400]
+                                                                  : Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          100,
+                                                                          100,
+                                                                          100),
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w300)),
@@ -368,11 +406,11 @@ class _BaseScreenState extends State<BaseScreen> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      const Text('Total',
+                                                       Text('Total',
                                                           style: TextStyle(
                                                               fontSize: 21.0,
                                                               color:
-                                                                  Colors.black,
+                                                                  dartMode ?Colors.white:Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600)),
@@ -381,10 +419,10 @@ class _BaseScreenState extends State<BaseScreen> {
                                                           'S\$' +
                                                               totalPrice
                                                                   .toString(),
-                                                          style: const TextStyle(
+                                                          style:  TextStyle(
                                                               fontSize: 21.0,
                                                               color:
-                                                                  Colors.black,
+                                                                  dartMode ?Colors.white:Colors.black,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w600)),

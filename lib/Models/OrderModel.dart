@@ -22,6 +22,7 @@ class Order extends ChangeNotifier {
 ///////////1
   /////////////////////////Sceeen/////////////////////////////
   String screen = 'welcome';
+  bool dartMode = false;
   /////////////////////////Screen/////////////////////////////
   /////////////////////////Vehicle/////////////////////////////
   String vehicleName = '';
@@ -145,6 +146,10 @@ class Order extends ChangeNotifier {
 
   void changeScreen(String screenFunction) {
     screen = screenFunction;
+    notifyListeners();
+  }
+  void changeDartMode() {
+    dartMode = !dartMode;
     notifyListeners();
   }
 
@@ -451,8 +456,8 @@ class Order extends ChangeNotifier {
 
     if (moreDetailsImage != null) {
       FirebaseStorage storage = FirebaseStorage.instance;
-      Reference ref =
-          storage.ref().child("OrderDetailedImage/DetailedImage" + DateTime.now().toString());
+      Reference ref = storage.ref().child(
+          "OrderDetailedImage/DetailedImage" + DateTime.now().toString());
       UploadTask uploadTask = ref.putFile(moreDetailsImage!);
 
       await uploadTask.then((res) async {

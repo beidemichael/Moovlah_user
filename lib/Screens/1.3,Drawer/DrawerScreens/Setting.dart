@@ -7,6 +7,7 @@ import 'package:moovlah_user/Service/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
+import '../../../Models/OrderModel.dart';
 import '../../../Models/models.dart';
 import '../../../Service/Database.dart';
 import 'edit_Name_popup.dart';
@@ -24,6 +25,7 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     final userInfo = Provider.of<List<UserInformation>>(context);
+    final dartMode = Provider.of<Order>(context).dartMode;
     void whenProfileUpDateTapped() {
       showModalBottomSheet(
           backgroundColor: Colors.transparent,
@@ -46,26 +48,27 @@ class _SettingState extends State<Setting> {
     }
 
     return Scaffold(
+      backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[50],
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.grey[50],
+          backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[50],
           elevation: 0,
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Setting',
+               Text('Setting',
                   style: TextStyle(
                       fontSize: 21.0,
-                      color: Colors.black,
+                      color: dartMode ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w600)),
             ],
           ),
           iconTheme: const IconThemeData(color: Colors.black)),
       // ignore: unnecessary_null_comparison
       body: userInfo == null || userInfo.length == 0
-          ? const Center(
+          ?  Center(
               child: SpinKitCircle(
-              color: Colors.black,
+              color: dartMode ? Colors.white : Colors.black,
               size: 50.0,
             ))
           : Padding(
@@ -78,14 +81,15 @@ class _SettingState extends State<Setting> {
                       width: 150,
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF600),
-                        border: Border.all(width: 1, color: Colors.black),
+                        border: Border.all(width: 1, color: dartMode ? Colors.white : Colors.black,
+                        ),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       child: Icon(
                         FontAwesomeIcons.userLarge,
                         shadows: [
                           BoxShadow(
-                            color: Colors.grey.shade900,
+                            color: Colors.grey.shade800,
                             blurRadius: 2.0, //effect of softening the shadow
                             spreadRadius: 1, //effecet of extending the shadow
                             offset: const Offset(
@@ -100,9 +104,9 @@ class _SettingState extends State<Setting> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 30.0),
                     child: Text(userInfo[0].userName,
-                        style: const TextStyle(
+                        style:  TextStyle(
                             fontSize: 35.0,
-                            color: Colors.black,
+                            color: dartMode ? Colors.white : Colors.black,
                             fontWeight: FontWeight.w600)),
                   ),
                   SizedBox(
@@ -115,7 +119,7 @@ class _SettingState extends State<Setting> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: dartMode ? Colors.grey[800] : Colors.white,
                         border: Border.all(
                             width: 1, color: Color.fromARGB(255, 0, 0, 0)),
                         borderRadius: BorderRadius.circular(15),
@@ -129,17 +133,18 @@ class _SettingState extends State<Setting> {
                             Icon(
                               FontAwesomeIcons.userPen,
                               size: 20.0,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: dartMode ? Colors.white : Colors.black,
                             ),
                             const SizedBox(
                               width: 15,
                             ),
-                            const Text(
+                             Text(
                               'Change Username',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18.0,
-                                  color: Color.fromARGB(255, 0, 0, 0)),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),
@@ -157,7 +162,7 @@ class _SettingState extends State<Setting> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:  dartMode ? Colors.grey[800] : Colors.white,
                         border: Border.all(
                             width: 1, color: Color.fromARGB(255, 0, 0, 0)),
                         borderRadius: BorderRadius.circular(15),
@@ -174,17 +179,18 @@ class _SettingState extends State<Setting> {
                                 Icon(
                                   FontAwesomeIcons.camera,
                                   size: 20.0,
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: dartMode ? Colors.white : Colors.black,
                                 ),
                                 const SizedBox(
                                   width: 15,
                                 ),
-                                const Text(
+                                 Text(
                                   'Proof of Delivery',
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 18.0,
-                                      color: Color.fromARGB(255, 0, 0, 0)),
+                                      color: dartMode ? Colors.white : Colors.black,
+                                  ),
                                 ),
                               ],
                             ),
@@ -217,7 +223,7 @@ class _SettingState extends State<Setting> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:  dartMode ? Colors.grey[800] : Colors.white,
                         border: Border.all(
                             width: 1, color: Color.fromARGB(255, 0, 0, 0)),
                         borderRadius: BorderRadius.circular(15),
@@ -231,17 +237,18 @@ class _SettingState extends State<Setting> {
                             Icon(
                               FontAwesomeIcons.doorOpen,
                               size: 20.0,
-                              color: Color.fromARGB(255, 0, 0, 0),
+                              color: dartMode ?Colors.white:Colors.black,
                             ),
                             const SizedBox(
                               width: 15,
                             ),
-                            const Text(
+                             Text(
                               'SignOut',
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: 18.0,
-                                  color: Color.fromARGB(255, 0, 0, 0)),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),

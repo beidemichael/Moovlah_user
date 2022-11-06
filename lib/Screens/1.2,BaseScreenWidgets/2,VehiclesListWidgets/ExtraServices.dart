@@ -18,6 +18,7 @@ class _ExtraServicesState extends State<ExtraServices> {
   @override
   Widget build(BuildContext context) {
     final vehicleService = Provider.of<Order>(context).vehicleServiceDisplay;
+    final dartMode = Provider.of<Order>(context).dartMode;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20),
       child: SizedBox(
@@ -26,12 +27,13 @@ class _ExtraServicesState extends State<ExtraServices> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               'Extra Services',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
-                  color: Colors.black),
+                  color: dartMode ? Colors.white : Colors.black,
+              ),
             ),
             ListView.builder(
               shrinkWrap: true,
@@ -52,7 +54,8 @@ class _ExtraServicesState extends State<ExtraServices> {
                         color: vehicleService
                                 .contains(widget.vehicle.extraService[index])
                             ? Colors.yellow.shade200
-                            : Colors.white,
+                            : dartMode ?Colors.grey[700]:Colors.white,
+
                         border:
                             Border.all(width: 1, color: Colors.grey.shade500),
                         borderRadius: const BorderRadius.all(
@@ -67,19 +70,21 @@ class _ExtraServicesState extends State<ExtraServices> {
                           children: [
                             Text(
                               widget.vehicle.extraService[index],
-                              style: const TextStyle(
+                              style:  TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
-                                  color: Colors.black),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                             Text(
                               r'S$' +
                                   widget.vehicle.extraServicePrice[index]
                                       .toString(),
-                              style: const TextStyle(
+                              style:  TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
-                                  color: Colors.black),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),

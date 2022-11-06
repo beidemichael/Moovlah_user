@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously, sort_child_properties_last, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../Models/OrderModel.dart';
 import '../../../Service/Database.dart';
 
 class EditNameSettingPopup extends StatefulWidget {
@@ -27,9 +29,11 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
 
   @override
   Widget build(BuildContext context) {
+    final dartMode = Provider.of<Order>(context).dartMode;
     return Container(
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: dartMode ? Colors.grey[800] : Colors.white,
+
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
       ),
@@ -45,7 +49,7 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                   "Edit name",
                   style: TextStyle(
                       fontSize: 24.0,
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color: dartMode ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w600),
                 ),
               ],
@@ -53,8 +57,8 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
             const SizedBox(
               height: 15.0,
             ),
-            const Divider(
-              color: Colors.black,
+             Divider(
+              color: dartMode ? Colors.white : Colors.black,
               height: 4.0,
             ),
             const SizedBox(
@@ -66,7 +70,8 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                 newName = val;
               },
               style: TextStyle(
-                  color: Colors.grey[700],
+                  color: dartMode ? Color.fromARGB(255, 196, 196, 196) :
+                  Colors.grey[700],
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500
                   // decorationColor: Colors.white,
@@ -81,7 +86,7 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                 labelStyle: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 18.0,
-                    color: Colors.grey[600]),
+                    color: dartMode ? Color.fromARGB(255, 190, 190, 190) :  Colors.grey[600]),
                 /* hintStyle: TextStyle(
                                   color: Colors.orange[900]
                                   ) */
@@ -91,7 +96,8 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                 enabledBorder: OutlineInputBorder(
                     borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                     borderSide:
-                        BorderSide(color: Color.fromARGB(255, 0, 0, 0))),
+                        BorderSide(color: dartMode ? Colors.white : Colors.black,
+                    )),
                 ////////////////////////////////
 
                 ///when textfield is selected//////////////////////////
@@ -110,7 +116,8 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                   width: MediaQuery.of(context).size.width * .7,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 238, 238, 238),
+                    color: dartMode ? Colors.grey[700] :
+                    Color.fromARGB(255, 238, 238, 238),
                     border: Border.all(width: 1, color: Color.fromARGB(255, 117, 117, 117)),
                     borderRadius: BorderRadius.circular(35.0),
                   ),
@@ -118,7 +125,8 @@ class _EditNameSettingPopupState extends State<EditNameSettingPopup> {
                     child: Text('Cancel',
                         style: TextStyle(
                             fontSize: 21.0,
-                            color: Color.fromARGB(255, 117, 117, 117),
+                            color: dartMode ? Colors.grey[400] : 
+ Color.fromARGB(255, 117, 117, 117),
                             fontWeight: FontWeight.w600)),
                   ),
                 )

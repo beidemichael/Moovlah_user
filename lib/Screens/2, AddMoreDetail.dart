@@ -60,12 +60,13 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
         Provider.of<Order>(context).favouriteDriverFirstDisplay;
     final moreDetailsImage =
         Provider.of<Order>(context).moreDetailsImageDisplay;
+         final dartMode = Provider.of<Order>(context).dartMode;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor:  dartMode ? Colors.grey[800] : Colors.grey[100],
       appBar: AppBar(
           centerTitle: true,
-          backgroundColor: Colors.grey[100],
+          backgroundColor: dartMode ? Colors.grey[800] : Colors.grey[100],
           elevation: 0,
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -95,7 +96,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.grey[50],
                       border: Border.all(
                           width: 1.5,
                           color: const Color.fromARGB(255, 214, 214, 214)),
@@ -128,12 +129,13 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                           const SizedBox(
                             width: 15,
                           ),
-                          const Text(
+                           Text(
                             'Order Remarks',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18.0,
-                                color: Color.fromARGB(255, 0, 0, 0)),
+                                color: dartMode ? Colors.white : Colors.black,
+                            ),
                           ),
                         ],
                       ),
@@ -153,7 +155,9 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                     decoration: BoxDecoration(
                       color: favouriteDriverFirst
                           ? Colors.yellow.shade200
-                          : Colors.white,
+                          : dartMode
+                              ? Colors.grey[800]
+                              : Colors.white,
                       border: Border.all(
                           width: 1.5,
                           color: const Color.fromARGB(255, 214, 214, 214)),
@@ -186,12 +190,13 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                           const SizedBox(
                             width: 15,
                           ),
-                          const Text(
+                           Text(
                             'Favourite Drivers First',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 18.0,
-                                color: Color.fromARGB(255, 0, 0, 0)),
+                                color: dartMode ? Colors.white : Colors.black,
+                            ),
                           ),
                         ],
                       ),
@@ -208,7 +213,7 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: dartMode ? Colors.grey[800] : Colors.grey[50],
                       border: Border.all(
                           width: 1.5,
                           color: const Color.fromARGB(255, 214, 214, 214)),
@@ -278,12 +283,13 @@ class _AddMoreDetailState extends State<AddMoreDetail> {
                               const SizedBox(
                                 width: 15,
                               ),
-                              const Text(
+                               Text(
                                 'Add Image',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 18.0,
-                                    color: Color.fromARGB(255, 0, 0, 0)),
+                                    color: dartMode ? Colors.white : Colors.black,
+                                ),
                               ),
                             ],
                           ),

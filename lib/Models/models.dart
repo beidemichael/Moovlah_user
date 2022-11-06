@@ -28,6 +28,20 @@ class UserInformation {
   });
 }
 
+class SavedPlaces {
+  double lat;
+  double long;
+  String description;
+  String documentId;
+
+  SavedPlaces({
+    required this.description,
+    required this.lat,
+    required this.long,
+    required this.documentId,
+  });
+}
+
 class Vehicles {
   String type;
   String documentId;

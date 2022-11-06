@@ -20,6 +20,7 @@ class _SpecificationsState extends State<Specifications> {
   Widget build(BuildContext context) {
     final vehicleSpecification =
         Provider.of<Order>(context).vehicleSpecificationDisplay;
+        final dartMode = Provider.of<Order>(context).dartMode;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 0),
       child: SizedBox(
@@ -28,13 +29,14 @@ class _SpecificationsState extends State<Specifications> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+             Text(
               
               'Specifications',
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0,
-                  color: Colors.black),
+                  color: dartMode ? Colors.white : Colors.black,
+              ),
             ),
             ListView.builder(
               shrinkWrap: true,
@@ -55,7 +57,9 @@ class _SpecificationsState extends State<Specifications> {
                         color: vehicleSpecification
                                 .contains(widget.vehicle.specification[index])
                             ? Colors.yellow.shade200
-                            : Colors.white,
+                            : dartMode
+                                ? Colors.grey[700]
+                                : Colors.white,
                         border: Border.all(width: 1, color: Colors.grey.shade500),
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10.0),
@@ -69,19 +73,21 @@ class _SpecificationsState extends State<Specifications> {
                           children: [
                             Text(
                               widget.vehicle.specification[index],
-                              style: const TextStyle(
+                              style:  TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
-                                  color: Colors.black),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                             Text(
                               r'S$' +
                                   widget.vehicle.specificationPrice[index]
                                       .toString(),
-                              style: const TextStyle(
+                              style:  TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
-                                  color: Colors.black),
+                                  color: dartMode ? Colors.white : Colors.black,
+                              ),
                             ),
                           ],
                         ),

@@ -31,11 +31,12 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
     final locationList = Provider.of<Order>(context).locationList;
     final totalPrice = Provider.of<Order>(context).totalPriceDisplay;
     final upLoading = Provider.of<Order>(context).uploadingDisplay;
+    final dartMode = Provider.of<Order>(context).dartMode;
 
     final PaymentController controller = Get.put(PaymentController());
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration:  BoxDecoration(
+        color: dartMode ? Colors.grey[700] : Colors.white,
         // ignore: prefer_const_constructors
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(25.0), topRight: Radius.circular(25.0)),
@@ -45,12 +46,13 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
           const SizedBox(
             height: 20,
           ),
-          const Text(
+           Text(
             'Payment Method',
             style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 25.0,
-                color: Color.fromARGB(255, 0, 0, 0)),
+                color: dartMode ? Colors.white : Colors.black,
+            ),
           ),
           Expanded(
             child: ListView(
@@ -89,7 +91,7 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: dartMode ? Colors.grey[700] : Colors.white,
                             border: Border.all(
                                 width: 1.5,
                                 color:
@@ -126,12 +128,15 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                     const SizedBox(
                                       width: 15,
                                     ),
-                                    const Text(
+                                     Text(
                                       'Creditcard/Debitcard',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 18.0,
-                                          color: Color.fromARGB(255, 0, 0, 0)),
+                                          color: dartMode
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -160,7 +165,7 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                         child: Container(
                           width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
-                            color: cash ? Colors.yellow.shade200 : Colors.white,
+                            color: cash ? Colors.yellow.shade200 : dartMode ? Colors.grey[700] : Colors.white,
                             border: Border.all(
                                 width: 1.5,
                                 color:
@@ -201,13 +206,16 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Text(
+                                         Text(
                                           'Cash',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w500,
                                               fontSize: 18.0,
                                               color:
-                                                  Color.fromARGB(255, 0, 0, 0)),
+                                                  dartMode
+                                                ?  cash ? Colors.black :Colors.white
+                                                : Colors.black,
+                                          ),
                                         ),
                                         const Text(
                                           'Select who is paying',
@@ -256,7 +264,7 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                       decoration: BoxDecoration(
                                         color: paidBy == 'Sender'
                                             ? Colors.yellow.shade200
-                                            : Colors.white,
+                                            : dartMode ? Colors.grey[700] : Colors.white,
                                         border: Border.all(
                                             width: 1.5,
                                             color: const Color.fromARGB(
@@ -296,14 +304,18 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                   Text(
                                                     'Sender',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize: 18.0,
-                                                        color: Color.fromARGB(
-                                                            255, 0, 0, 0)),
+                                                        color: dartMode
+                                                          ? paidBy == 'Sender'
+                                                              ? Colors.black
+                                                              : Colors.white
+                                                          : Colors.black,
+                                                    ),
                                                   ),
                                                   Text(
                                                     locationList
@@ -343,7 +355,7 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                       decoration: BoxDecoration(
                                         color: paidBy == 'Recipient'
                                             ? Colors.yellow.shade200
-                                            : Colors.white,
+                                            : dartMode ? Colors.grey[700] : Colors.white,
                                         border: Border.all(
                                             width: 1.5,
                                             color: const Color.fromARGB(
@@ -383,14 +395,18 @@ class _PaymentBreakUpState extends State<PaymentBreakUp> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  const Text(
+                                                   Text(
                                                     'Recipient',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         fontSize: 18.0,
-                                                        color: Color.fromARGB(
-                                                            255, 0, 0, 0)),
+                                                        color: dartMode
+                                                          ? paidBy == 'Recipient'
+                                                              ? Colors.black
+                                                              : Colors.white
+                                                          : Colors.black,
+                                                    ),
                                                   ),
                                                   Text(
                                                     locationList
